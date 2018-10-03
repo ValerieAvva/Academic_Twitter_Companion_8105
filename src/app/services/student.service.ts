@@ -20,15 +20,14 @@ export class StudentService {
     private http: HttpClient
   ) { }
 
-  getStudents (section: string): Observable<any> {
-    let params = new HttpParams().set('section', section);
-
-    return this.http.get<Student[]>(this.studentUrl, {params: params}).pipe(
+  getStudents (section: number): Observable<any> {
+    const url = `${this.studentUrl}/sectionID/${section}`;
+    return this.http.get<Student[]>(url).pipe(
       catchError(this.handleError('getStudents', []))
     );
   }
 
-  getStudent (id: number) : Observable<Student> {
+  getStudent (id: string) : Observable<Student> {
     const url = `${this.studentUrl}/${id}`;
     return this.http.get<Student>(url).pipe(
       catchError(this.handleError<Student>(`getStudent id=${id}`))
@@ -75,9 +74,10 @@ export class StudentService {
   }
 
   deleteStudent (student: Student | string): Observable<Student> {
-    const handle = typeof student === 'string' ? student : student.handle;
-    const url = `${this.studentUrl}/${handle}`;
-
+    console.log(student);
+    const id = typeof student == 'string' ? student : student.id;
+    const url = `${this.studentUrl}/${id}`;
+    console.log(url);
     return this.http.delete<Student>(url, httpOptions)
       .pipe(
         catchError(this.handleError<Student>('deleteStudent'))

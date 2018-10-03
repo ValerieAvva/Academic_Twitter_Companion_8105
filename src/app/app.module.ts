@@ -23,7 +23,6 @@ import {ChartsModule} from 'ng2-charts';
 import {StudentService} from './services/student.service';
 import {TweetsService} from './services/tweets.service';
 import {SectionService} from './services/section.service';
-import {InMemoryDataServiceService} from './in-memory-data-service.service';
 import { EditClassComponent } from './edit-class/edit-class.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -48,9 +47,6 @@ import { SideBarComponent } from './side-bar/side-bar.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataServiceService, {dataEncapsulation : false}
-    ),
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,

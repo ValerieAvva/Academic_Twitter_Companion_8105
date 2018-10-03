@@ -72,11 +72,11 @@ export class ClassViewComponent implements OnInit {
       .subscribe(section => {
         this.section = section;
         console.log('got section');
-        console.log(section);
+        console.log(section.name);
         console.log('Students list');
         console.log(this.students);
 
-        this.studentSerivce.getStudents(section.name).subscribe(students => {
+        this.studentSerivce.getStudents(section.courseNum).subscribe(students => {
           this.students = students;
           console.log(students);
         });

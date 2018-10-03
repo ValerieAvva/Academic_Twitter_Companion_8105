@@ -1,11 +1,13 @@
 export class Tweet {
-  user : string;
+  username : string;
+  handle : string;
   timestamp: string;
   month: number;
   day: number;
-  yesr: number;
+  year: number;
   content: string;
   hashtags: string[];
   likes: number;
   retweets: number;
+  link: string;
 }

@@ -44,7 +44,6 @@ export class SectionService {
   }
 
   addSection(section: Section) : Observable<Section> {
-
     return this.http.post<Section>(this.sectionUrl, section, httpOptions).pipe(
       catchError(this.handleError<Section>('addSection')));
   }

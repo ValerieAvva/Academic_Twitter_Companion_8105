@@ -2,10 +2,11 @@ import {Tweet} from './tweetClass';
 import {StudentService} from '../services/student.service';
 
 export class Student {
-  id: number;
+  id: string;
   name : string;
   handle: string;
   section: string;
+  courseNum: number;
   tweets: Tweet[];
   totTweets: number;
   totRetweets: number;

@@ -48,32 +48,38 @@
       {{student.name}}'s Tweets
     </h2>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid" *ngFor="let tweet of tweets">
     <div class="row flex-row flex-nowrap">
       <div class="col-3">
-        <mat-card>
+        <mat-card class="tweet">
           <mat-card-header>
             <mat-card-title>
-              {{student.name}}
+              <!-- {{tweet.username}} -->
+              <a href="https://twitter.com/{{tweet.user}}">{{student.name}}</a>            
             </mat-card-title>
             <mat-card-subtitle>
-              {{student.handle}}
+              <!-- {{tweet.handle}} -->
+              {{tweet.user}} ·
+              <a href={{tweet.link}}>{{tweet.timestamp}}</a>
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            - wish i was a bird
+            {{tweet.content}}
+            <div *ngFor="let ht of tweet.hashtags">
+              <a href="https://twitter.com/hashtag/{{ht.replace('#', '')}}">{{ht}}</a>
+            </div>
           </mat-card-content>
           <mat-card-content>
-            Likes: 35 Retweets: 40
+            Likes: {{tweet.likes}} Retweets: {{tweet.retweets}}
           </mat-card-content>
           <mat-card-footer>
           </mat-card-footer>
         </mat-card>
       </div>
     </div>
-  </div>
-
 </div>
+
+
 
 
 

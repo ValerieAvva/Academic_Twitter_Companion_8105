@@ -3,6 +3,8 @@ import {StudentService} from '../services/student.service';
 import {Student} from '../Structs/studentClass';
 import {ActivatedRoute} from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import { Tweet } from '../Structs/tweetClass';
+import { TweetsService } from '../services/tweets.service';
 
 @Component({
   selector: 'app-student-view',
@@ -39,6 +41,7 @@ export class StudentViewComponent implements OnInit {
   public barChartLabels:string[] = ['Tweets', 'Retweets', 'Likes'];
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
+  public tweets:Tweet[] = [];
 
   public barChartData:any[] = [
     {data: [0]}
@@ -50,6 +53,7 @@ export class StudentViewComponent implements OnInit {
   public doughnutChartType:string = 'doughnut';
 
   constructor(private studentService : StudentService,
+              private tweetService : TweetsService,
               private route: ActivatedRoute,
               private matDialog: MatDialog) {}
 
@@ -67,15 +71,25 @@ export class StudentViewComponent implements OnInit {
   }
 
   getStudent() : void {
-    const id = +this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log("Student view")
+    console.log(id);
     this.studentService.getStudent(id)
       .subscribe(student => {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
         this.doughnutChartData = this.student.topicDistNum;
+        this.tweetService.getTweets(this.student.handle)
+            .subscribe(tweets => {
+              this.tweets = tweets;
+              console.log('tweets received');
+              console.log(this.tweets);
+            });
         console.log('Student recievedd');
         console.log(student);
       });
+    console.log("_____________")
+    
   }
 
   exportData() : void {

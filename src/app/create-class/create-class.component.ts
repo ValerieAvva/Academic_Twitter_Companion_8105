@@ -109,6 +109,7 @@ export class CreateClassComponent implements OnInit {
         for(let stu of this.students) {
           stu.topicDist = this.topics;
           stu.section = section.name;
+          stu.courseNum = section.courseNum;
         }
 
         this.studentService.addStudents(this.students);
