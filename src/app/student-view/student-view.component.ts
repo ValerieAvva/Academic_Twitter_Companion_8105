@@ -78,6 +78,8 @@ export class StudentViewComponent implements OnInit {
       .subscribe(student => {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
+        // TODO: get doughnutChartLabels from section data - currently student.section doesn't reference section
+        // this.doughnutChartLabels = this.student.section.topics;
         this.doughnutChartData = this.student.topicDistNum;
         this.tweetService.getTweets(this.student.handle)
             .subscribe(tweets => {

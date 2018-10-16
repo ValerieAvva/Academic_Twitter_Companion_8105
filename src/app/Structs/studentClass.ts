@@ -20,7 +20,7 @@ export class Student {
     this.topicDist = ['#2110ctv', 'HuckleBerry', 'Research'];
     this. topicDistNum = [5, 10, 30];
     this.totRetweets = 21;
-    this.totLikes = 11;
+    this.totTweets = 11;
     this. totLikes = 13;
   }
 }

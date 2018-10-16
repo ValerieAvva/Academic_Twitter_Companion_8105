@@ -6,6 +6,10 @@ export class Section {
   courseNum: number;
   roster: Array<Student>;
   topics: Array<String>;
+  topicCounts: Array<number>;
+  tweets: number;
+  likes: number;
+  retweets: number;
 
   constructor(name: string, coursNum: number,topics: Array<String>, roster?: Array<Student>) {
     this.name = name;

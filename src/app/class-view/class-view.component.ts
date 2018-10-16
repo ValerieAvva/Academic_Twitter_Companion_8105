@@ -35,14 +35,14 @@ export class ClassViewComponent implements OnInit {
     {data: [103, 200, 90]}
   ];
 
-
-  public doughnutChartLabels: string[] = ['#2110ctv', 'HuckleBerry', 'Research'];
-  public doughnutChartData: number[] = [35, 46, 72];
-  public doughnutChartType = 'doughnut';
-
   section: Section;
   students: Student[];
   studentSelected: Student;
+
+  public doughnutChartLabels: String[] = ["topic 1", "topic 2", "topic 3"];
+  public doughnutChartData: number[] = [13, 38, 23];
+  doughnutChartDataClone: number[];
+  public doughnutChartType = 'doughnut';
 
   emptyValidation = new FormControl([Validators.required]);
 
@@ -71,15 +71,32 @@ export class ClassViewComponent implements OnInit {
     this.sectionService.getSection(id)
       .subscribe(section => {
         this.section = section;
+        console.log(section);
         console.log('got section');
         console.log(section.name);
         console.log('Students list');
-        console.log(this.students);
+        
+        this.doughnutChartLabels = this.section.topics;
+        
+        // this.doughnutChartData = this.section.topicCounts;
+        // uncomment ^ and delete next block of code once class has this data
+        let data = [];
+        for (let label of this.doughnutChartLabels) {
+          data.push(Math.floor(Math.random() * 100) + 1);
+        }
+        this.doughnutChartData = data;
 
+        this.barChartData = [
+          {data: [section.tweets, section.retweets, section.likes]}
+        ];
+
+        //TODO: add data in for tweet timeline distribution
+        
         this.studentSerivce.getStudents(section.courseNum).subscribe(students => {
           this.students = students;
           console.log(students);
         });
+        console.log(this.students);
 
       });
   }
