@@ -13,34 +13,31 @@ var T = new Twitter(config);
 var hashtagsQuery = ["#1102kidsci"]; //collect these from database instead
 var lastid = 0; //get last id in database
 //for debugging to see when rate limit resets
-T.get('application/rate_limit_status', {}, function(err, data, response) {
-    if (!err) {
-        console.log(data["resources"]["search"]);
-    } else {
-        console.log(err);
-    }
-});
+//T.get('application/rate_limit_status', {}, function(err, data, response) {
+//    if (!err) {
+//        console.log(data["resources"]["search"]);
+//    } else {
+//        console.log(err);
+//    }
+//});
 var hashIndex = 0;
 async.whilst(function() {
-    if (hashIndex >= hashtagsQuery.length) {
-        console.log("done!");
-    }
     return hashIndex < hashtagsQuery.length;
 },
-function(next) {
+function(nextouter) {
     var maxId = 0;
     var params;
+    var query = hashtagsQuery[hashIndex];
     if (lastid > 0) {
-        params = { q: hashtagsQuery[hashIndex], count: 100, tweet_mode: "extended", since_id: lastid };
+        params = { q: query, count: 100, tweet_mode: "extended", since_id: lastid };
     } else {
-        params = { q: hashtagsQuery[hashIndex], count: 100, tweet_mode: "extended" };
+        params = { q: query, count: 100, tweet_mode: "extended" };
     }
     T.get('search/tweets', params, function(err, data, response) {
         if(!err){
             var tweets = data['statuses'];
             for(let t of tweets)
             {
-                console.log(t.id);
                 var hashtags = [];
                 for (let h of t.entities.hashtags)
                 {
@@ -67,17 +64,18 @@ function(next) {
             },
             function (next) {    
                 if (lastid > 0) {
-                    params = { q: hashtagsQuery[hashIndex], count: 100, since_id: lastid, max_id: maxId, tweet_mode: "extended" };
+                    params = { q: query, count: 100, since_id: lastid, max_id: maxId, tweet_mode: "extended" };
                 } else {
-                    params = { q: hashtagsQuery[hashIndex], count: 100, max_id: maxId, tweet_mode: "extended" };
+                    params = { q: query, count: 100, max_id: maxId, tweet_mode: "extended" };
                 }
                 T.get('search/tweets', params, function(err, data, response) {
                     if(!err){
                         var tweets = data['statuses'];
-                        console.log("while loop tweets:");
+                        if (tweets == null) {
+                            nextouter();
+                        }
                         for(let t of tweets)
                         {
-                            console.log(t.id);
                             var hashtags = [];
                             for (let h of t.entities.hashtags)
                             {
@@ -111,11 +109,11 @@ function(next) {
                 console.log(err);
                 return;
             });
-            console.log("done with second while loop, hashindex is %d", hashIndex);
         } else {
             console.log(err);
         }
         hashIndex++;
+        nextouter();
     });
 },
 function(err) {
