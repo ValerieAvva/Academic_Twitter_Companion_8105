@@ -8,8 +8,9 @@ mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?
 function collectTweets() {
   var cp = require('child_process');
   var n = cp.fork('./server/twitter/collect.js');
+  setTimeout(collectTweets, 3000000);
 }
-setInterval(collectTweets, 3000); //this is in ms
+collectTweets();
 
 const bodyParser = require('body-parser');
 
