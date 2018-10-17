@@ -10,11 +10,16 @@ var request = require('request');
 
 var T = new Twitter(config);
 var hashtags = ["#1102kidsci"]; //collect these from database instead
-var lastid = 1; //get last id in database
+var lastid = 0; //get last id in database
 console.log("collect");
 for(var i = 0; i < hashtags.length; i++) {
     var maxId = 0;
-    var params = { q: hashtags[i], count: 100, since_id: lastid};
+    var params;
+    if (lastid > 0) {
+        params = { q: hashtags[i], count: 100, tweet_mode: "extended", since_id: lastid };
+    } else {
+        params = { q: hashtags[i], count: 100, tweet_mode: "extended" };
+    }
     T.get('search/tweets', params, function(err, data, response) {
         if(!err){
             var tweets = data['statuses'];
@@ -40,6 +45,7 @@ for(var i = 0; i < hashtags.length; i++) {
                     if (err) throw err;
                 });
             }
+            //issue: this is asynchronous, so it doesnt update before the while loop below
             maxId = tweets[tweets.length - 1]['id'];
         } else {
             console.log(err);

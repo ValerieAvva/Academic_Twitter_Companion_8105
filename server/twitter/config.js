@@ -1,3 +1,4 @@
+//TODO: remove this from github, allow permission to these for clients who log in
 module.exports = {
   consumer_key: 'VqIgWtqfqlODHbgFAPuTItldN',
   consumer_secret: 'ikvzxsoruL3xmZcCPwxyWiC4IZ5MvUnmDXLN6OyxeHrTwKH6Ko',
