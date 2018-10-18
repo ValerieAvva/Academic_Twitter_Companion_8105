@@ -114,6 +114,7 @@ export class CreateClassComponent implements OnInit {
         console.log(section)
         for(let stu of this.students) {
           stu.topicDist = this.topics;
+          stu.topicDistNum = Array.apply(null, new Array(this.topics.length)).map(Number.prototype.valueOf,0)
           stu.section = section.name;
           stu.courseNum = section.courseNum;
         }

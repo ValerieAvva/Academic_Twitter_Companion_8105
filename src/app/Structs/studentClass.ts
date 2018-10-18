@@ -17,10 +17,10 @@ export class Student {
   constructor(name: string, handle: string) {
     this.name = name;
     this.handle = handle;
-    this.topicDist = ['#2110ctv', 'HuckleBerry', 'Research'];
-    this. topicDistNum = [5, 10, 30];
-    this.totRetweets = 21;
-    this.totTweets = 11;
-    this. totLikes = 13;
+    this.topicDist = ['ERR: No Topics Assigned'];
+    this. topicDistNum = [404];
+    this.totRetweets = 0;
+    this.totTweets = 0;
+    this. totLikes = 0;
   }
 }
