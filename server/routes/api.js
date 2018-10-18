@@ -58,7 +58,6 @@ router.post('/sections', (req, res) => {
         res.json(201, newSection);
     });
 
-
 });
 
 // STUDENTS 
@@ -75,6 +74,33 @@ router.get('/students/:id', (req, res) => {
 router.get('/students/sectionID/:id', (req, res) => {
   StudentModel.find({courseNum: req.params.id}, function(err, students) {
     if (err) throw err;
+
+    for(let s of students)
+    {
+      TweetModel.find({handle: s.handle}, function(err, tweets) {
+        s.totTweets = 0
+        s.totLike = 0
+        s.totRetweets = 0
+        s.topicDistNum = Array.apply(null, new Array(s.topicDist.length)).map(Number.prototype.valueOf,0);
+        if (err) throw err;
+        for (let t of tweets)
+        {          
+          s.totTweets += 1
+          s.totLike += t.favorite_count
+          s.totRetweets += t.retweet_count
+          for(i = 0; i< s.topicDist.length; i++)
+          {
+              if (t.hashtags.indexOf(s.topicDist[i]) > -1 )
+              {
+                  s.topicDistNum[i] += 1
+              }
+          }
+        }
+        StudentModel.findOneAndUpdate({id: s.id}, {$set: {totTweets : s.totTweets, totLike : s.totLike, totRetweets: s.totRetweets, topicDistNum : s.topicDistNum}}, function(err){
+          if (err) throw err;
+        })
+      })
+    }
 
     // object of all the users
     res.json(students);
