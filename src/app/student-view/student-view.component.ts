@@ -98,6 +98,7 @@ export class StudentViewComponent implements OnInit {
     let dialogRef = this.matDialog.open(ExportDialogComponent, {
       width: '250px'
     });
+    window.print();
   }
 }
 
