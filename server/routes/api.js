@@ -159,13 +159,27 @@ router.get('/tweets/:id', (req, res) => {
 });
 
 // Get all tweets for a specific student
-router.get('/tweets/students/:handle', (req, res) => {
+router.get('/tweets/', (req, res) => {
   console.log("Getting all tweets for student id");
-  console.log(req.params);
-  TweetModel.find({handle: req.params.handle}, function(err, tweets) {
+  if (req.query.startTime != null && req.query.endTime != null) {
+    req.query.timestamp = {$gte : req.query.startTime, $lte : req.query.endTime};
+  } else if (req.query.startTime != null) {
+    req.query.timestamp = {$gte : req.query.startTime};
+  } else if(req.query.endTime != null) {
+    req.query.timestamp = {$lte : req.query.endTime};
+  }
+  delete req.query.startTime;
+  delete req.query.endTime;
+  if (req.query.hashtags != null)
+  {
+    req.query.hashtags = {$all : req.query.hashtags.split(",")}
+  }
+
+  console.log(req.query);
+
+  TweetModel.find(req.query, function(err, tweets) {
     if (err) throw err;
     // object of all the tweets
-    console.log(tweets);
     res.json(tweets);
   });
   console.log("-------");

@@ -47,12 +47,15 @@ function(nextouter) {
                     id: t.id,
                     username: t.user.name,
                     handle: "@" + t.user.screen_name,
-                    timestamp: t.created_at,
+                    timestamp: new Date(t.created_at),
                     content: t.text,
                     hashtags: hashtags,
                     likes: t.favorite_count,
-                    retweets: t.retweet_count
+                    retweets: t.retweet_count,
+                    reply: t.in_reply_to_status_id != null,
+                    retweet: t.retweeted_status != null
                 })
+                console.log(newTweet);
                 newTweet.save(function(err) {
                     if (err) throw err;
                 });
@@ -89,8 +92,11 @@ function(nextouter) {
                                 content: t.text,
                                 hashtags: hashtags,
                                 likes: t.favorite_count,
-                                retweets: t.retweet_count
+                                retweets: t.retweet_count,
+                                reply: t.in_reply_to_status_id != null,
+                                retweet: t.retweeted_status != null
                             });
+                            console.log(newTweet);
                             newTweet.save(function(err) {
                                 if (err) throw err;
                             });

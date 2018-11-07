@@ -21,12 +21,47 @@ export class TweetsService {
     //Add another service here if you want
   ) { }
 
+  /*
   getTweets(handle: string) : Observable<Tweet[]> {
     const url = `${this.tweetUrl}/students/${handle}`;
     return this.http.get<Tweet[]>(url).pipe(
       catchError(this.handleError('getTweets', []))
     );
   }
+  */
+
+  getTweets(handle: string, startTime: Date, endTime: Date, hashtags: string[], reply: boolean, retweet: boolean ) : Observable<Tweet[]> {
+    var queries = new Array();
+    if (handle != "")
+    {
+      queries.push(`handle=${handle}`)
+    }
+    if (startTime != null)
+    {
+      queries.push(`startTime=${startTime}`);
+    }
+    if (endTime != null)
+    {
+      queries.push(`endTime=${endTime}`);
+    }
+    if (hashtags.length > 0)
+    {
+      queries.push(`hashtags=${hashtags.join(",")}`);
+    }
+    if (!reply)
+    {
+      queries.push(`reply=${reply}`);
+    }
+    if (!retweet)
+    {
+      queries.push(`retweet=${retweet}`);
+    }
+    const url = `${this.tweetUrl}?${queries.join("&")}`;
+    return this.http.get<Tweet[]>(url).pipe(
+      catchError(this.handleError('getTweets', []))
+    );
+  }
+
 
 
 
