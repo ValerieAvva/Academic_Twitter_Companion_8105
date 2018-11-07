@@ -55,19 +55,19 @@
   <mat-checkbox [(ngModel)]="retweetsChecked">Retweets    </mat-checkbox>
   <mat-checkbox [(ngModel)]="repliesChecked">Replies    </mat-checkbox>
   <br/>
-  <mat-form-field>
-    <input [matDatepicker]="startDate" placeholder="Start Date" [(ngModel)]="inputStartDate">
-    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-    <mat-datepicker #startDate></mat-datepicker>
-    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-    <input [matDatepicker]="endDate" placeholder="End Date" [(ngModel)]="inputEndDate">
-    <mat-datepicker #endDate></mat-datepicker>
-  </mat-form-field>
+  <input [matDatepicker]="startDate" placeholder="Start Date" [(ngModel)]="inputStartDate">
+  <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+  <mat-datepicker #startDate></mat-datepicker>
+  <input [matDatepicker]="endDate" placeholder="End Date" [(ngModel)]="inputEndDate">
+  <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+  <mat-datepicker #endDate></mat-datepicker>
+  <br/>
 
-  <div class="container-fluid" *ngFor="let tweet of tweets">
-    <div class="row flex-row flex-nowrap">
-      <div class="col-3">
-        <mat-card class="tweet">
+
+  <!-- <div class="container-fluid" *ngFor="let tweet of tweets"> -->
+    <!-- <div class="row flex-row flex-nowrap">
+      <div class="col-3"> -->
+        <mat-card class="tweet"  *ngFor="let tweet of tweets">
           <mat-card-header>
             <mat-card-title>
               <a href="https://twitter.com/{{tweet.handle}}">{{student.name}}</a>            
@@ -89,9 +89,9 @@
           <mat-card-footer>
           </mat-card-footer>
         </mat-card>
-      </div>
-    </div>
-</div>
+      <!-- </div>
+    </div> -->
+<!-- </div> -->
 
 
 
