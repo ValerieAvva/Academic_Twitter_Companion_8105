@@ -9,7 +9,7 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, M
           MatGridListModule, MatCardModule, MatDatepickerModule,
           MatNativeDateModule, MatIconModule, MatToolbarModule,
           MatStepperModule, MatTableModule, MatDialogModule,
-          MatProgressSpinner, MatChipsModule} from '@angular/material';
+          MatProgressSpinner, MatChipsModule, MatCheckbox, MatCheckboxModule} from '@angular/material';
 
 import { HomeComponent } from './home/home.component';
 import { TweetComponent } from './tweet/tweet.component';
@@ -50,6 +50,7 @@ import { SideBarComponent } from './side-bar/side-bar.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,

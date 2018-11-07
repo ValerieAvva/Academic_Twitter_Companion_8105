@@ -2,7 +2,7 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {StudentService} from '../services/student.service';
 import {Student} from '../Structs/studentClass';
 import {ActivatedRoute} from '@angular/router';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDatepickerModule, MatCheckboxModule} from '@angular/material';
 import { Tweet } from '../Structs/tweetClass';
 import { TweetsService } from '../services/tweets.service';
 

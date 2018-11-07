@@ -48,6 +48,22 @@
       {{student.name}}'s Tweets
     </h2>
   </div>
+
+  <mat-checkbox *ngFor="let topic of doughnutChartLabels">{{topic}}    </mat-checkbox>
+  <br/>
+  <mat-checkbox [(ngModel)]="tweetsChecked">Tweets    </mat-checkbox>
+  <mat-checkbox [(ngModel)]="retweetsChecked">Retweets    </mat-checkbox>
+  <mat-checkbox [(ngModel)]="repliesChecked">Replies    </mat-checkbox>
+  <br/>
+  <mat-form-field>
+    <input [matDatepicker]="startDate" placeholder="Start Date" [(ngModel)]="inputStartDate">
+    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+    <mat-datepicker #startDate></mat-datepicker>
+    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+    <input [matDatepicker]="endDate" placeholder="End Date" [(ngModel)]="inputEndDate">
+    <mat-datepicker #endDate></mat-datepicker>
+  </mat-form-field>
+
   <div class="container-fluid" *ngFor="let tweet of tweets">
     <div class="row flex-row flex-nowrap">
       <div class="col-3">
