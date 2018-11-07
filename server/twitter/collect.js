@@ -1,25 +1,65 @@
-
+//database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?retryWrites=true');
+mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?retryWrites=true').then(() => {
+  console.log('connected');
+}).catch(err => console.log(err));
+var TweetModel = require("../models/tweet.js");
+var SectionModel = require("../models/section.js");
+
 
 var async = require("async");
-
 var Twitter = require('twitter');
 var config = require('./config.js');
-var TweetModel = require("../models/tweet.js");
 var request = require('request');
-
 var T = new Twitter(config);
-var hashtagsQuery = ["#1102kidsci"]; //collect these from database instead
-var lastid = 0; //get last id in database
-//for debugging to see when rate limit resets
-//T.get('application/rate_limit_status', {}, function(err, data, response) {
-//    if (!err) {
-//        console.log(data["resources"]["search"]);
-//    } else {
-//        console.log(err);
-//    }
-//});
+var numHash = 0;
+console.log("1");
+SectionModel.find({}, 'topics', function(err, hashtags) {
+    if (!err) {
+        console.log("hi");
+        console.log(hashtags);
+        var hashtagsQuery = [];
+        var i = 0;
+        async.whilst(function() {
+            return i < hashtags.length;
+        }, 
+        function(nextouter) {
+            numHash += (hashtags[i]['topics'].length);
+            var j = 0;
+            async.whilst(function() {
+                return j < hashtags[i]['topics'].length;
+            },
+            function(next) {
+                var currHash = hashtags[i]['topics'][j];
+                TweetModel.findOne({hashtags: currHash}).sort('-id').select('id').exec(function(err, tweet) {
+                    console.log('in tweet search');
+                    if(tweet==null) {
+                        hashtagsQuery.push({hashtag: currHash, id: 0});
+                    } else {
+                        hashtagsQuery.push({hashtag: currHash, id: tweet});
+                    }
+                });
+                j++;
+                next();
+            }, 
+            function(err) {
+                console.log(err);
+            });
+            i++;
+            nextouter();
+        },
+        function(err) {
+            console.log(err);
+        });  
+        console.log(hashtagsQuery);
+        console.log('sep');
+        getTweets(hashtagsQuery);
+    } else {
+        console.log(err);
+    }
+});
+function getTweets(hashtagsQuery) { console.log(hashtagsQuery); }
+function get() {
 var hashIndex = 0;
 async.whilst(function() {
     return hashIndex < hashtagsQuery.length;
@@ -120,3 +160,4 @@ function(err) {
     console.log(err);
     return;
 });
+}

@@ -3,7 +3,10 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?retryWrites=true');
+mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?retryWrites=true').then(() => {
+  console.log('connected');
+}).catch(err => console.log(err));
+
 //run tweet collection every ______
 function collectTweets() {
   var cp = require('child_process');
