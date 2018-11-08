@@ -1,16 +1,18 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+​import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {StudentService} from '../services/student.service';
 import {Student} from '../Structs/studentClass';
 import {ActivatedRoute} from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDatepickerModule, MatCheckboxModule} from '@angular/material';
 import { Tweet } from '../Structs/tweetClass';
 import { TweetsService } from '../services/tweets.service';
+import { SectionService } from '../services/section.service';
+import { Section } from '../Structs/sectionClass';
 
 @Component({
   selector: 'app-student-view',
   templateUrl: './student-view.component.html',
   styleUrls: ['./student-view.component.css']
-})
+})​​
 
 
 export class StudentViewComponent implements OnInit {
@@ -24,6 +26,8 @@ export class StudentViewComponent implements OnInit {
   };
 
   private student: Student;
+  private section: Section;
+  private roster: Student[];
 
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
@@ -42,18 +46,26 @@ export class StudentViewComponent implements OnInit {
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
   public tweets:Tweet[] = [];
+  tweetsChecked: boolean;
+  retweetsChecked: boolean;
+  repliesChecked: boolean;
+  private startDate: Date;
+  private endDate: Date;
+
 
   public barChartData:any[] = [
     {data: [0]}
   ];
 
 
-  public doughnutChartLabels:string[] = ['#2110ctv', 'HuckleBerry', 'Research'];
+  public doughnutChartLabels:string[];
   public doughnutChartData:number[] = [0,0,0];
   public doughnutChartType:string = 'doughnut';
+  
 
   constructor(private studentService : StudentService,
               private tweetService : TweetsService,
+              private sectionService : SectionService,
               private route: ActivatedRoute,
               private matDialog: MatDialog) {}
 
@@ -78,16 +90,29 @@ export class StudentViewComponent implements OnInit {
       .subscribe(student => {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
-        // TODO: get doughnutChartLabels from section data - currently student.section doesn't reference section
-        // this.doughnutChartLabels = this.student.section.topics;
         this.doughnutChartData = this.student.topicDistNum;
-        this.tweetService.getTweets(this.student.handle)
+        this.tweetService.getTweets(this.student.handle, new Date(0), new Date(), [], true, true)
             .subscribe(tweets => {
               this.tweets = tweets;
               console.log('tweets received');
               console.log(this.tweets);
             });
-        console.log('Student recievedd');
+        this.sectionService.getSection(student.courseNum).subscribe(section => {
+          this.section = section;
+          this.doughnutChartLabels = this.section.topics as string[];
+          console.log(this.doughnutChartLabels)
+          console.log(this.section)
+        });
+        this.studentService.getStudents(student.courseNum).subscribe(roster => {
+          this.roster = roster;
+          console.log(this.roster)
+        })
+        
+        
+        this.tweetsChecked = true;
+        this.retweetsChecked = true;
+        this.repliesChecked = true;
+        console.log('Student recieved');
         console.log(student);
       });
     console.log("_____________")
@@ -99,6 +124,24 @@ export class StudentViewComponent implements OnInit {
     let dialogRef = this.matDialog.open(ExportDialogComponent, {
       width: '250px'
     });
+  }
+
+  updateFilters() : void {
+    let sDate = new Date(0);
+    let eDate = new Date();
+    if (this.startDate != null) {
+      sDate = this.startDate;
+    }
+    if (this.endDate != null) {
+      eDate = this.endDate;
+    }
+    console.log("start Date: " + sDate + " end date: " + eDate + " labels: " + this.doughnutChartLabels + " replies: " + this.repliesChecked + " retweets: " + this.retweetsChecked)
+    this.tweetService.getTweets(this.student.handle, sDate, eDate, this.doughnutChartLabels, this.repliesChecked, this.retweetsChecked)
+            .subscribe(tweets => {
+              this.tweets = tweets;
+              console.log('tweets received');
+              console.log(this.tweets);
+            });
   }
 }
 
@@ -118,3 +161,5 @@ export class ExportDialogComponent {
     this.dialogRef.close();
   }
 }
+
+​
