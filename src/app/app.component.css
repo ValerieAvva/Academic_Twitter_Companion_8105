@@ -32,3 +32,33 @@ blockquote.twitter-tweet {
     text-decoration: underline;
   }
 
+.header{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 4fr 2fr;
+  grid-template-areas: "home create myclass space profile"
+}
+
+.home-icon{
+  cursor: pointer;
+  grid-area: home;
+}
+
+.header-icons{
+  margin: 0 0.3em;
+}
+
+.create-class{
+  grid-area: create;
+}
+
+.my-classes{
+  grid-area: myclass;
+}
+
+.space{
+  grid-area: space;
+}
+
+.user-profile{
+  grid-area: profile;
+}
