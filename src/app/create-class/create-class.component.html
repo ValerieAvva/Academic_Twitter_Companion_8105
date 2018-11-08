@@ -98,12 +98,12 @@
           <button mat-raised-button color="primary" (click)="addTopic(inputTopic)">Add Topic</button>
         </div>
         <div layout="row">
-          <mat-form-field>
+          <mat-form-field class="example-chip-list">
             <mat-chip-list #chipList>
               <mat-chip *ngFor="let topic of topics" [selectable]="selectable"
-                        [removable]="removable" (remove)="deleteTopic(t)">
+                        [removable]="removable" (removed)="deleteTopic(topic)">
                 {{topic}}
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                <mat-icon matChipRemove (click)="deleteTopic(topic)">cancel</mat-icon>
               </mat-chip>
             </mat-chip-list>
           </mat-form-field>
