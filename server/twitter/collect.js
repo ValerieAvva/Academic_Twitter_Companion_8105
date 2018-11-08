@@ -6,7 +6,6 @@ mongoose.connect('mongodb+srv://matt:msl@academictwitter-nlieo.mongodb.net/test?
 var TweetModel = require("../models/tweet.js");
 var SectionModel = require("../models/section.js");
 
-
 var async = require("async");
 var Twitter = require('twitter');
 var config = require('./config.js');
@@ -51,7 +50,7 @@ async.whilst(function() {
     return hashIndex < hashtagIds.length;
 },
 function(nextouter) {
-    var lastId = hashtagIds[hashIndex]['id'];
+    var lastid = hashtagIds[hashIndex]['id'];
     var maxId = 0;
     var params;
     var done = 0;
@@ -85,6 +84,7 @@ function(nextouter) {
                     if (err) throw err;
                 });
             }
+            if(tweets.length > 0) {
             maxId = tweets[tweets.length - 1]['id'];
             //what if its the first time collecting for this hashtag? you need to handle that case
             async.whilst(function() {
@@ -141,6 +141,7 @@ function(nextouter) {
                 console.log(err);
                 return;
             });
+            }
         } else {
             console.log(err);
         }
