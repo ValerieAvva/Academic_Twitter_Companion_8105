@@ -46,9 +46,11 @@ export class StudentViewComponent implements OnInit {
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
   public tweets:Tweet[] = [];
-  tweetsChecked: boolean;
-  retweetsChecked: boolean;
-  repliesChecked: boolean;
+  private tweetsChecked: boolean;
+  private retweetsChecked: boolean;
+  private repliesChecked: boolean;
+  private topicsChecked: boolean[];
+
   private startDate: Date;
   private endDate: Date;
 
@@ -100,6 +102,10 @@ export class StudentViewComponent implements OnInit {
         this.sectionService.getSection(student.courseNum).subscribe(section => {
           this.section = section;
           this.doughnutChartLabels = this.section.topics as string[];
+          for(let label of this.doughnutChartLabels) {
+            this[label] = true;
+            // this.topicsChecked.push(this[label])
+          }
           console.log(this.doughnutChartLabels)
           console.log(this.section)
         });
@@ -135,8 +141,17 @@ export class StudentViewComponent implements OnInit {
     if (this.endDate != null) {
       eDate = this.endDate;
     }
-    console.log("start Date: " + sDate + " end date: " + eDate + " labels: " + this.doughnutChartLabels + " replies: " + this.repliesChecked + " retweets: " + this.retweetsChecked)
-    this.tweetService.getTweets(this.student.handle, sDate, eDate, this.doughnutChartLabels, this.repliesChecked, this.retweetsChecked)
+    
+    let topics = []
+    console.log(this.doughnutChartLabels)
+    for(let label in this.doughnutChartLabels){
+      let name = this.doughnutChartLabels[label]
+      if (this[name] == true){
+        topics.push(name)
+      }
+    }
+    console.log("start Date: " + sDate + " end date: " + eDate + " labels: " + topics + " replies: " + this.repliesChecked + " retweets: " + this.retweetsChecked)
+    this.tweetService.getTweets(this.student.handle, sDate, eDate, topics, this.repliesChecked, this.retweetsChecked)
             .subscribe(tweets => {
               this.tweets = tweets;
               console.log('tweets received');

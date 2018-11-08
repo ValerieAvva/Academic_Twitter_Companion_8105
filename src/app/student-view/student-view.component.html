@@ -1,11 +1,11 @@
-<div>
+​<div>
 
     <!-- <form>
         <h3>Select a Student to view</h3>
         <mat-form-field>
           <mat-select [formControl]="emptyValidation" [(ngModel)]="selectedValue" name="student" required>
             <mat-placeholder>Goto Student</mat-placeholder>
-            <mat-option *ngFor="let student of roster" [value]="student.id">
+            <mat-option *ngFor="let s​​tudent of roster" [value]="student.id">
               {{student.handle}}
             </mat-option>
           </mat-select>
@@ -63,7 +63,7 @@
       </h2>
     </div>
   
-    <mat-checkbox *ngFor="let topic of doughnutChartLabels">{{topic}}    </mat-checkbox>
+    <mat-checkbox *ngFor="let topic of doughnutChartLabels" [(ngModel)]="this[topic]">{{topic}}    </mat-checkbox>
     <br/>
     <mat-checkbox [(ngModel)]="tweetsChecked">Tweets    </mat-checkbox>
     <mat-checkbox [(ngModel)]="retweetsChecked">Retweets    </mat-checkbox>
@@ -113,4 +113,4 @@
   
   
   
-  
+  ​
