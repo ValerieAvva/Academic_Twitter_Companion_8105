@@ -4,8 +4,8 @@
 <div>
   <mat-horizontal-stepper #stepper="matHorizontalStepper">
     <mat-step [stepControl]="emptyValidation">
-      <form [formGroup]="emptyValidation">
-        <ng-template matStepLabel>Add A Class Name & Course Number</ng-template>
+      <form [formGroup]="emptyValidation" class="form-center">
+        <ng-template matStepLabel>Add Class Details</ng-template>
         <mat-form-field>
           <input matInput placeholder="Class Name" [formControl]="emptyValidation" [(ngModel)]="className" name="className" required>
           <mat-error *ngIf="emptyValidation.invalid">Field cannot be empty</mat-error>
@@ -14,18 +14,24 @@
           <input matInput placeholder="Course Number" [formControl]="courseNUmValidation" [(ngModel)]="courseNumber" name="courseNumber" required pattern="[0-9]*">
           <mat-error *ngIf="courseNUmValidation.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
+        <input [matDatepicker]="startDate" placeholder="Class Start Date" [(ngModel)]="inputStartDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+        <mat-datepicker #startDate></mat-datepicker>
+        <input [matDatepicker]="endDate" placeholder="Class End Date" [(ngModel)]="inputEndDate" required>
+        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate></mat-datepicker>
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="emptyValidation">
-      <form [formGroup]="emptyValidation">
+      <form [formGroup]="emptyValidation" class="form-center">
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
         </div>
-        <ng-template matStepLabel>Add Your Students</ng-template>
+        <ng-template matStepLabel>Add or Import Students Roster</ng-template>
         <div layout="col">
         <div>
           <h3>Add Student</h3>
@@ -35,33 +41,32 @@
           </mat-form-field>
           <mat-form-field class="">
             <span matPrefix>@ &nbsp;</span>
-            <input matInput  placeholder="Handle" [(ngModel)]="inputHandle" name="stuHandle" [formControl]="emptyValidation" required>
+            <input matInput  placeholder="Twitter Username" [(ngModel)]="inputHandle" name="stuHandle" [formControl]="emptyValidation" required>
             <mat-error *ngIf="emptyValidation.invalid">Field cannot be empty</mat-error>
           </mat-form-field>
           <button mat-raised-button color="primary" (click)="addStudent(inputName, inputHandle)">Add Student</button>
         </div>
         <div>
-          <h3>Add Students From File</h3>
+          <h3>Import Students Roster from External File</h3>
           <div layout="row">
             <mat-form-field class="">
               <input matInput placeholder="Select a file, ex: .csv, .exel" [(ngModel)]="inputFileLocation" name="fileLoc">
             </mat-form-field>
-            <button mat-basic-chip color="secondary" (click)="searchFile()">Search</button>
-            <button mat-raised-button color="primary" (click)="addStudentsFromFile()">Add Students From File</button>
+            <button mat-basic-chip color="secondary" (click)="searchFile()">Choose File</button>
+            <button mat-raised-button color="primary" (click)="addStudentsFromFile()">Import</button>
           </div>
         </div>
           <div>
             <h3>
-              Student Roster
+              Current Student Roster
             </h3>
-
             <mat-nav-list>
               <mat-list-item *ngFor="let student of students">
 
                 {{student.name}} | {{student.handle}}
 
                 <button mat-button (click)="deleteStudent(student)">
-                  x
+                  <mat-icon>cancel</mat-icon>
                 </button>
               </mat-list-item>
             </mat-nav-list>
@@ -84,7 +89,7 @@
       </form>
     </mat-step>
     <mat-step [stepControl]="emptyValidation">
-      <form [formGroup]="emptyValidation">
+      <form [formGroup]="emptyValidation" class="form-center">
         <ng-template matStepLabel>Add Hashtags</ng-template>
         <div layout="row">
           <mat-form-field class="">
@@ -93,12 +98,12 @@
           <button mat-raised-button color="primary" (click)="addTopic(inputTopic)">Add Topic</button>
         </div>
         <div layout="row">
-          <mat-form-field class="">
+          <mat-form-field class="example-chip-list">
             <mat-chip-list #chipList>
               <mat-chip *ngFor="let topic of topics" [selectable]="selectable"
-                        [removable]="removable" (remove)="deleteTopic(t)">
+                        [removable]="removable" (removed)="deleteTopic(topic)">
                 {{topic}}
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                <mat-icon matChipRemove (click)="deleteTopic(topic)">cancel</mat-icon>
               </mat-chip>
             </mat-chip-list>
           </mat-form-field>
@@ -110,14 +115,16 @@
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Finish Creating Class</ng-template>
-      <h3>
-        Verify all information is correct and Click Create Class to Finalize Class
-      </h3>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button type="submit" mat-button (click)="createSection()">Create Class</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+      <div class="form-center">
+        <ng-template matStepLabel>Review and Finish Creating Class</ng-template>
+        <h3>
+          Verify all information is correct and Click Create Class to Finalize Class
+        </h3>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button type="submit" mat-button (click)="createSection()">Create Class</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

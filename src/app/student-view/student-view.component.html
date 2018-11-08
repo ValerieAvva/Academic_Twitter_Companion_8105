@@ -1,99 +1,116 @@
-<div>
-  <div align="center">
-    <h3>
-      {{student.name}} | {{student.handle}}
-    </h3>
-    <button mat-raised-button color="primary" (click)="exportData()">Export Student's Data</button>
-  </div>
-  <div class="row">
-    <div class="column">
-      <h3>{{student.handle}}'s Tweet Type Distribution</h3>
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"
-              height="70"></canvas>
+​<div>
+
+    <!-- <form>
+        <h3>Select a Student to view</h3>
+        <mat-form-field>
+          <mat-select [formControl]="emptyValidation" [(ngModel)]="selectedValue" name="student" required>
+            <mat-placeholder>Goto Student</mat-placeholder>
+            <mat-option *ngFor="let s​​tudent of roster" [value]="student.id">
+              {{student.handle}}
+            </mat-option>
+          </mat-select>
+          <!-- <mat-error *ngIf="emptyValidation.invalid">Please Select a student before proceeding</mat-error> -->
+        <!--</mat-form-field>
+        <button mat-raised-button color="primary" routerLink="/student/{{selectedValue}}">Go to Student</button>
+      </form> -->
+    <div align="center">
+      <h3>
+        {{student.name}} | {{student.handle}}
+      </h3>
+      <button mat-raised-button color="primary" (click)="exportData()">Export Student's Data</button>
     </div>
-    <div class="column">
-      <h3>{{student.handle}}'s Topic Distribution</h3>
-      <canvas baseChart
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [options]="doughnutChartOptions"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"
-              height="70"></canvas>
+    <div class="row">
+      <div class="column">
+        <h3>{{student.handle}}'s Tweet Type Distribution</h3>
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+                height="70"></canvas>
+      </div>
+      <div class="column">
+        <h3>{{student.handle}}'s Topic Distribution</h3>
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [options]="doughnutChartOptions"
+                [chartType]="doughnutChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+                height="70"></canvas>
+      </div>
     </div>
-  </div>
-  <div align="center">
-    <h3>
-      Time Distribution of {{student.handle}}'s Tweets
-    </h3>
-  </div>
-  <div class="row">
-  </div>
-  <div class="marginin">
-    <div class="column">
-      <app-time-graph [dataIn]="ands"></app-time-graph>
+    <div align="center">
+      <h3>
+        Time Distribution of {{student.handle}}'s Tweets
+      </h3>
     </div>
-  </div>
+    <div class="row">
+    </div>
+    <div class="marginin">
+      <div class="column">
+        <app-time-graph [dataIn]="ands"></app-time-graph>
+      </div>
+    </div>
+  
+    <div>
+      <h2>
+        {{student.name}}'s Tweets
+      </h2>
+    </div>
+  
+    <mat-checkbox *ngFor="let topic of doughnutChartLabels" [(ngModel)]="this[topic]">{{topic}}    </mat-checkbox>
+    <br/>
+    <mat-checkbox [(ngModel)]="tweetsChecked">Tweets    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="retweetsChecked">Retweets    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="repliesChecked">Replies    </mat-checkbox>
+    <br/>
+    <input [matDatepicker]="startDate" placeholder="Start Date" [(ngModel)]="inputStartDate">
+    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+    <mat-datepicker #startDate></mat-datepicker>
+    <input [matDatepicker]="endDate" placeholder="End Date" [(ngModel)]="inputEndDate">
+    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+    <mat-datepicker #endDate></mat-datepicker>
+    <br/>
+    <button mat-raised-button color="primary" (click)="updateFilters()">Update Filters</button>
 
-  <div>
-    <h2>
-      {{student.name}}'s Tweets
-    </h2>
-  </div>
-
-  <mat-checkbox *ngFor="let topic of doughnutChartLabels">{{topic}}    </mat-checkbox>
-  <br/>
-  <mat-checkbox [(ngModel)]="tweetsChecked">Tweets    </mat-checkbox>
-  <mat-checkbox [(ngModel)]="retweetsChecked">Retweets    </mat-checkbox>
-  <mat-checkbox [(ngModel)]="repliesChecked">Replies    </mat-checkbox>
-  <br/>
-  <input [matDatepicker]="startDate" placeholder="Start Date" [(ngModel)]="inputStartDate">
-  <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-  <mat-datepicker #startDate></mat-datepicker>
-  <input [matDatepicker]="endDate" placeholder="End Date" [(ngModel)]="inputEndDate">
-  <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-  <mat-datepicker #endDate></mat-datepicker>
-  <br/>
-
-
-  <!-- <div class="container-fluid" *ngFor="let tweet of tweets"> -->
-    <!-- <div class="row flex-row flex-nowrap">
-      <div class="col-3"> -->
-        <mat-card class="tweet"  *ngFor="let tweet of tweets">
-          <mat-card-header>
-            <mat-card-title>
-              <a href="https://twitter.com/{{tweet.handle}}">{{student.name}}</a>            
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{tweet.handle}} ·
-              <a href="{{tweet.content.substring(tweet.content.indexOf(http))}}">{{tweet.timestamp}}</a>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            {{tweet.content}}
-            <div *ngFor="let ht of tweet.hashtags">
-              <a href="https://twitter.com/hashtag/{{ht.replace('#', '')}}">{{ht}}</a>
-            </div>
-          </mat-card-content>
-          <mat-card-content>
-            Likes: {{tweet.likes}} Retweets: {{tweet.retweets}}
-          </mat-card-content>
-          <mat-card-footer>
-          </mat-card-footer>
-        </mat-card>
-      <!-- </div>
-    </div> -->
-<!-- </div> -->
-
-
-
-
-
+  
+  
+    <!-- <div class="container-fluid" *ngFor="let tweet of tweets"> -->
+      <!-- <div class="row flex-row flex-nowrap">
+        <div class="col-3"> -->
+          <mat-card class="tweet"  *ngFor="let tweet of tweets">
+            <mat-card-header>
+              <mat-card-title>
+                <a href="https://twitter.com/{{tweet.handle}}">{{student.name}}</a>            
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{tweet.handle}} ·
+                <a href="{{tweet.content}}">{{tweet.timestamp}}</a>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              {{tweet.content}}
+              <div *ngFor="let ht of tweet.hashtags">
+                <a href="https://twitter.com/hashtag/{{ht.replace('#', '')}}">{{ht}}</a>
+              </div>
+            </mat-card-content>
+            <mat-card-content>
+              Likes: {{tweet.likes}} Retweets: {{tweet.retweets}}
+            </mat-card-content>
+            <mat-card-footer>
+            </mat-card-footer>
+          </mat-card>
+        <!-- </div>
+      </div> -->
+  <!-- </div> -->
+  
+  
+  
+  
+  
+  ​

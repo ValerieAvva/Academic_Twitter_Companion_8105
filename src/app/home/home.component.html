@@ -1,7 +1,7 @@
 <div align="center">
   <form>
     <div>
-      <h3>Select a Class</h3>
+      <h2>Select a Class</h2>
       <mat-form-field>
         <mat-select [formControl]="emptyValidation" [(ngModel)]="selectedValue" name="section" required>
           <mat-placeholder>Section</mat-placeholder>
@@ -9,12 +9,11 @@
             {{section.name}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="emptyValidation.invalid">Please Select a class before proceeding</mat-error>
+        <mat-error *ngIf="emptyValidation.invalid">Select or Create a Class before proceeding</mat-error>
       </mat-form-field>
       <button mat-raised-button color="primary" routerLink="/view/{{selectedValue}}">Go to Class</button>
     </div>
-
-      <button mat-button="" [formControl]="emptyValidation" name="alink" routerLink="/edit/{{selectedValue}}" required>Edit Class</button>
+      <button mat-button="" routerLink="/create" class="class-buttons" required><mat-icon class="class-icons">add</mat-icon>Create New Class</button>
+      <button mat-button="" [formControl]="emptyValidation" class="class-buttons" name="alink" routerLink="/edit/{{selectedValue}}" required><mat-icon class="class-icons">edit</mat-icon>Edit Selected Class</button>
   </form>
-  <button mat-button="" routerLink="/create" required>Create Class</button>
 </div>
