@@ -180,6 +180,9 @@ router.get('/tweets/', (req, res) => {
   TweetModel.find(req.query, function(err, tweets) {
     if (err) throw err;
     // object of all the tweets
+    for (var i = tweets.length - 1; i >= 0; i--) {
+      console.log(tweets[i]);
+    }
     res.json(tweets);
   });
   console.log("-------");

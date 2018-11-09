@@ -56,8 +56,8 @@ function(nextouter) {
     var params;
     var done = 0;
     var query = hashtagIds[hashIndex]['hashtag'];
-    if (lastid > 0) {
-        params = { q: query, count: 100, tweet_mode: "extended", since_id: lastid };
+    if (lastId > 0) {
+        params = { q: query, count: 100, tweet_mode: "extended", since_id: lastId };
     } else {
         params = { q: query, count: 100, tweet_mode: "extended" };
     }
@@ -87,15 +87,15 @@ function(nextouter) {
                 newTweet.save(function(err) {
                     if (err) throw err;
                 });
+                maxId = t.id
             }
-            maxId = tweets[tweets.length - 1]['id'];
             //what if its the first time collecting for this hashtag? you need to handle that case
             async.whilst(function() {
-                return maxId > lastid || done == 1;
+                return maxId > lastId || done == 1;
             },
             function (next) {    
-                if (lastid > 0) {
-                    params = { q: query, count: 100, since_id: lastid, max_id: maxId, tweet_mode: "extended" };
+                if (lastId > 0) {
+                    params = { q: query, count: 100, since_id: lastId, max_id: maxId, tweet_mode: "extended" };
                 } else {
                     params = { q: query, count: 100, max_id: maxId, tweet_mode: "extended" };
                 }
@@ -116,7 +116,7 @@ function(nextouter) {
                                 id: t.id,
                                 username: t.user.name,
                                 handle: "@" + t.user.screen_name,
-                                timestamp: t.created_at,
+                                timestamp: new Date(t.created_at),
                                 content: t.text,
                                 hashtags: hashtags,
                                 likes: t.favorite_count,
