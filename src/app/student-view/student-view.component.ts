@@ -51,8 +51,8 @@ export class StudentViewComponent implements OnInit {
   private repliesChecked: boolean;
   private topicsChecked: boolean[];
 
-  private startDate: Date;
-  private endDate: Date;
+  private inputStartDate: Date;
+  private inputEndDate: Date;
 
 
   public barChartData:any[] = [
@@ -93,7 +93,7 @@ export class StudentViewComponent implements OnInit {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
         this.doughnutChartData = this.student.topicDistNum;
-        this.tweetService.getTweets(this.student.handle, new Date(0), new Date(), [], true, true)
+        this.tweetService.getTweets(this.student.handle, new Date(2018, 10, 8), new Date(), [], true, true)
             .subscribe(tweets => {
               this.tweets = tweets;
               console.log('tweets received');
@@ -135,11 +135,11 @@ export class StudentViewComponent implements OnInit {
   updateFilters() : void {
     let sDate = new Date(0);
     let eDate = new Date();
-    if (this.startDate != null) {
-      sDate = this.startDate;
+    if (this.inputStartDate != null) {
+      sDate = this.inputStartDate;
     }
-    if (this.endDate != null) {
-      eDate = this.endDate;
+    if (this.inputEndDate != null) {
+      eDate = this.inputEndDate;
     }
     
     let topics = []
