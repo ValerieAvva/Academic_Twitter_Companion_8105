@@ -49,11 +49,12 @@
         <div>
           <h3>Import Students Roster from External File</h3>
           <div layout="row">
-            <mat-form-field class="">
-              <input matInput placeholder="Select a file, ex: .csv, .exel" [(ngModel)]="inputFileLocation" name="fileLoc">
-            </mat-form-field>
-            <button mat-basic-chip color="secondary" (click)="searchFile()">Choose File</button>
-            <button mat-raised-button color="primary" (click)="addStudentsFromFile()">Import</button>
+            <input type="file" class="upload" (change)="changeListener($event.target.files)">
+
+
+
+            
+
           </div>
         </div>
           <div>
