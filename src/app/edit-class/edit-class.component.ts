@@ -23,6 +23,12 @@ export class EditClassComponent implements OnInit {
   inputHandle: string;
   topics: Array<String>;
 
+  className:any;
+  courseNumber:any;
+  inputFileLocation:any;
+  inputTopic:any;
+  
+
   emptyValidation = new FormControl([Validators.required]);
   courseNUmValidation = new FormControl([Validators.required, Validators.pattern('[0-9]*')]);
 

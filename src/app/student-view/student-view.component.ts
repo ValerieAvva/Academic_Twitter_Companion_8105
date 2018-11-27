@@ -25,9 +25,9 @@ export class StudentViewComponent implements OnInit {
     }]
   };
 
-  private student: Student;
-  private section: Section;
-  private roster: Student[];
+  student: Student;
+  section: Section;
+  roster: Student[];
 
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
@@ -46,13 +46,13 @@ export class StudentViewComponent implements OnInit {
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
   public tweets:Tweet[] = [];
-  private tweetsChecked: boolean;
-  private retweetsChecked: boolean;
-  private repliesChecked: boolean;
-  private topicsChecked: boolean[];
+  tweetsChecked: boolean;
+  retweetsChecked: boolean;
+  repliesChecked: boolean;
+  topicsChecked: boolean[];
 
-  private inputStartDate: Date;
-  private inputEndDate: Date;
+  inputStartDate: Date;
+  inputEndDate: Date;
 
 
   public barChartData:any[] = [
@@ -63,7 +63,7 @@ export class StudentViewComponent implements OnInit {
   public doughnutChartLabels:string[];
   public doughnutChartData:number[] = [0,0,0];
   public doughnutChartType:string = 'doughnut';
-  
+  doughnutChartOptions:any;
 
   constructor(private studentService : StudentService,
               private tweetService : TweetsService,

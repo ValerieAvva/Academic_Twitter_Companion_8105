@@ -24,6 +24,8 @@ export class CreateClassComponent implements OnInit {
   inputName: string;
   inputHandle: string;
   inputTopic: string;
+  inputEndDate: Date;
+  inputStartDate: Date;
 
   displayedColumns = ['name', 'handle'];
 
