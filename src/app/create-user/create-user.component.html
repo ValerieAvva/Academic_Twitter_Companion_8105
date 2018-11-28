@@ -1,0 +1,24 @@
+<div align="center">
+  <form>
+    <div>
+      <h1>Create User</h1>
+        <mat-form-field>
+          <input matInput placeholder="Username">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Re-Enter Password" [type]="hide ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+        <!-- <mat-error *ngIf="emptyValidation.invalid">Username and Password are Required</mat-error> -->
+    </div>
+    <button mat-raised-button color="primary" (click)="createUser()">Create User and Login</button>
+  </form>
+</div>
