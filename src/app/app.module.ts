@@ -28,6 +28,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { TimeGraphComponent } from './time-graph/time-graph.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
+import { LoginComponent } from './login/login.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { SideBarComponent } from './side-bar/side-bar.component';
     EditClassComponent,
     TimeGraphComponent,
     SideBarComponent,
-    ExportDialogComponent
+    ExportDialogComponent,
+    LoginComponent,
+    CreateUserComponent
   ],
   entryComponents: [ExportDialogComponent],
   imports: [
