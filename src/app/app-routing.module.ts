@@ -7,6 +7,7 @@ import {StudentViewComponent} from './student-view/student-view.component';
 import {EditClassComponent} from './edit-class/edit-class.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'student/:id', component: StudentViewComponent},
   {path: 'edit/:courseNum', component: EditClassComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'createUser', component: CreateUserComponent}
+  {path: 'createUser', component: CreateUserComponent},
+  {path: 'forgotPassword', component: ForgotPasswordComponent}
 ];
 @NgModule({
   imports: [

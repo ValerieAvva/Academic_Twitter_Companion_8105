@@ -34,6 +34,7 @@ import { TimeGraphComponent } from './time-graph/time-graph.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { CreateUserComponent } from './create-user/create-user.component';
     SideBarComponent,
     ExportDialogComponent,
     LoginComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    ForgotPasswordComponent
   ],
   entryComponents: [ExportDialogComponent],
   imports: [
