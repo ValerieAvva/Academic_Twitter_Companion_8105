@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'create', component: CreateClassComponent},
   {path: 'home', component: HomeComponent},
   {path: 'view/:id', component: ClassViewComponent},

@@ -1,12 +1,12 @@
 <div class="container" align="center" layout="column" layout-align="center center">
   <h1>Create User</h1>
   
-  <form [formGroup]="registrationFormGroup" (ngSubmit)="createUser()">
+  <form [formGroup]="registrationFormGroup" (ngSubmit)="createUser(inputUser, inputPass)">
       
       <div class="form-group">
           <mat-form-field>
           <!-- <label for="username">Username</label> -->
-            <input matInput class="form-control" type="text" name="username" formControlName="username" placeholder="Username" required/>
+            <input matInput class="form-control" type="text" name="username" [(ngModel)]="inputUser" formControlName="username" placeholder="Username" required/>
             <mat-error class="bg-danger" *ngIf="registrationFormGroup.controls.username.errors?.required && registrationFormGroup.controls.username.touched">Username is required</mat-error>
           </mat-form-field>
       </div>
@@ -15,7 +15,7 @@
           <div class="form-group">
             <mat-form-field>
               <!-- <label for="password">Password</label> -->
-              <input matInput class="form-control" type="password" name="password" formControlName="password" placeholder="Password" required>
+              <input matInput class="form-control" type="password" name="password" [(ngModel)]="inputPass" formControlName="password" placeholder="Password" required>
               <mat-error class="bg-danger" *ngIf="passwordFormGroup.controls.password.errors?.required && passwordFormGroup.controls.password.touched">Password is required</mat-error>
             </mat-form-field>
           </div>

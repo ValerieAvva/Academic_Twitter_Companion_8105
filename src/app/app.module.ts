@@ -1,3 +1,7 @@
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -72,6 +76,16 @@ import { CreateUserComponent } from './create-user/create-user.component';
     MatTableModule,
     MatDialogModule,
     MatChipsModule,
+    AngularFireModule.initializeApp({
+    apiKey: "AIzaSyCyIRubnGjWMGf58Ojs9k6l-82VJuixQ-A",
+    authDomain: "academictwittercompanion.firebaseapp.com",
+    databaseURL: "https://academictwittercompanion.firebaseio.com",
+    projectId: "academictwittercompanion",
+    storageBucket: "academictwittercompanion.appspot.com",
+    messagingSenderId: "407272599412"
+  }), //ajout
+    AngularFireAuthModule, //ajout
+    AngularFireDatabaseModule, //ajout
     ChartsModule],
   providers: [StudentService, TweetsService, SectionService],
   bootstrap: [AppComponent]

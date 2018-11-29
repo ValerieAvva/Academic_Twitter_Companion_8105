@@ -3,18 +3,18 @@
     <div>
       <h1>Login</h1>
         <mat-form-field>
-          <input matInput placeholder="Username">
+          <input matInput placeholder="Username" [(ngModel)]="inputUser" name="username" required>
         </mat-form-field>
     </div>
     <div>
 
         <mat-form-field>
-          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'">
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="inputPass" name="password">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
         <!-- <mat-error *ngIf="emptyValidation.invalid">Username and Password are Required</mat-error> -->
     </div>
-    <button mat-raised-button color="primary" (click)="login()">Login</button>
+    <button mat-raised-button color="primary" (click)="login(inputUser, inputPass)">Login</button>
     <button mat-raised-button color="primary" routerLink="/createUser">Create an Account</button>
   </form>
 </div>
