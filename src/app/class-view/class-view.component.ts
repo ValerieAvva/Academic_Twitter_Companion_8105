@@ -7,6 +7,8 @@ import {Student} from '../Structs/studentClass';
 import {StudentService} from '../services/student.service';
 import {FormControl, Validators} from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
+import { Tweet } from '../Structs/tweetClass';
+import { TweetsService } from '../services/tweets.service';
 
 @Component({
   selector: 'app-class-view',
@@ -49,7 +51,8 @@ export class ClassViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private sectionService: SectionService,
-    private studentSerivce: StudentService,
+    private studentService: StudentService,
+    private tweetService : TweetsService,
     private location: Location
   ) { }
 
@@ -60,6 +63,8 @@ export class ClassViewComponent implements OnInit {
       data: [1, 3, 4, 2, 1, 4, 2],
     }]
   };
+  dateCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  timeline = false;
 
   ngOnInit() {
     this.getSection();
@@ -75,32 +80,91 @@ export class ClassViewComponent implements OnInit {
         console.log('got section');
         console.log(section.name);
         console.log('Students list');
-        
+        console.log(section.tweets + " rt " + section.retweets + " l " + section.likes)
+        section.tweets = 0;
+        section.retweets = 0;
+        section.likes = 0;
         
         console.log("topic list")
         this.doughnutChartLabels = this.section.topics as string[];
         console.log(this.doughnutChartLabels)
-        this.doughnutChartData = this.section.topicCounts;
+        // this.doughnutChartData = this.section.topicCounts;
         // uncomment ^ and delete next block of code once class has this data
-        let data = [];
-        for (let label of this.doughnutChartLabels) {
-          data.push(Math.floor(Math.random() * 100) + 1);
-        }
-        this.doughnutChartData = data;
         
-        this.barChartData = [
-          {data: [section.tweets, section.retweets, section.likes]}
-        ];
-
-        //TODO: add data in for tweet timeline distribution
         
-        this.studentSerivce.getStudents(section.courseNum).subscribe(students => {
-          this.students = students;
-          console.log(students);
+        
+        this.studentService.getStudents(section.courseNum).subscribe(students => {
+          this.students = students as Student[];
+          let tweets:Tweet[] = []
+          for (let student of this.students) {
+            section.tweets += student.totTweets;
+            section.retweets += student.totRetweets;
+            section.likes += student.totLikes;
+            console.log(student)
+            this.tweetService.getTweets(student.handle, new Date(0), new Date(), [], true, true)
+            .subscribe(ts => {
+              tweets = tweets.concat(ts);
+              this.updateNumbers(ts);
+            });
+          }
+          this.barChartData = [
+            {data: [section.tweets, section.retweets, section.likes]}
+          ];
         });
-        console.log(this.students);
 
       });
+  }
+
+  updateNumbers(tweets:Tweet[]) : void {
+    // time graph update
+    let startDate = new Date(this.section.startDate).getTime();
+    let endDate = new Date(this.section.endDate).getTime();
+
+    let slice = (endDate - startDate)/14
+    var i:number;
+    let labels = [];
+    // let dateCounts = [];
+    for (i=0; i<14;i++) {
+      labels.push(new Date(startDate + i*slice).toString())
+      // dateCounts.push(0);
+    }
+    // console.log(labels)
+
+    // topic data
+    let data = [];
+    for (let label of this.doughnutChartLabels) {
+      data.push(0);
+    }
+    
+    for (let tweet of tweets) {
+      //hashtag number update
+      for (let ht of tweet.hashtags) {
+        if (this.doughnutChartLabels.includes(ht)) {
+          this.doughnutChartData[this.doughnutChartLabels.indexOf(ht)] += 1
+        }
+      }
+
+      //timeline
+      // var d:number = new Date(tweet.year, tweet.month, tweet.day).getTime()
+      var d:number = new Date(tweet.timestamp).getTime()
+      this.dateCounts[Math.floor((d-startDate)/slice)] +=1;
+    }
+    // this.doughnutChartData = data;
+    // console.log(this.dateCounts)
+  
+
+    this.ands = {
+      labels: labels,
+      datasets: [{
+        label: 'Num of Tweets',
+        data: this.dateCounts,
+      }]
+    };
+    this.timeline = false;
+    this.timeline = true;
+    
+    
+    
   }
 
   goBack(): void {

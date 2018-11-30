@@ -20,7 +20,7 @@ export class StudentService {
     private http: HttpClient
   ) { }
 
-  getStudents (section: number): Observable<any> {
+  getStudents (section: number): Observable<Student[]> {
     const url = `${this.studentUrl}/sectionID/${section}`;
     return this.http.get<Student[]>(url).pipe(
       catchError(this.handleError('getStudents', []))

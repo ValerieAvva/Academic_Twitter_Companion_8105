@@ -98,23 +98,23 @@ export class StudentViewComponent implements OnInit {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
         this.doughnutChartData = this.student.topicDistNum;
-        this.tweetService.getTweets(this.student.handle, new Date(2018, 10, 8), new Date(), [], true, true)
+
+        this.sectionService.getSection(student.courseNum).subscribe(section => {
+          this.section = section;
+          this.doughnutChartLabels = this.section.topics as string[];
+          for(let label of this.doughnutChartLabels) {
+            this[label] = true;
+          }
+          // console.log(this.doughnutChartLabels)
+          console.log(this.section)
+
+          this.tweetService.getTweets(this.student.handle, new Date(section.startDate), new Date(section.endDate), [], true, true)
             .subscribe(tweets => {
               this.tweets = tweets;
               console.log('tweets received');
               console.log(this.tweets);
               this.updateNumbers();
             });
-        this.sectionService.getSection(student.courseNum).subscribe(section => {
-          this.section = section;
-          this.doughnutChartLabels = this.section.topics as string[];
-          for(let label of this.doughnutChartLabels) {
-            this[label] = true;
-            // this.topicsChecked.push(this[label])
-          }
-          this.updateNumbers();
-          console.log(this.doughnutChartLabels)
-          console.log(this.section)
         });
         this.studentService.getStudents(student.courseNum).subscribe(roster => {
           this.roster = roster;
@@ -150,7 +150,7 @@ export class StudentViewComponent implements OnInit {
     }
     
     let topics = []
-    console.log(this.doughnutChartLabels)
+    // console.log(this.doughnutChartLabels)
     for(let label in this.doughnutChartLabels){
       let name = this.doughnutChartLabels[label]
       if (this[name] == true){
@@ -169,10 +169,8 @@ export class StudentViewComponent implements OnInit {
   updateNumbers() : void {
     if (this.tweets.length > 0 && this.doughnutChartLabels.length > 0) {
       // time graph update
-      // let startDate = this.section.startDate;
-      // let endDate = this.section.endDate;
-      let startDate = new Date(2018, 7).getTime();
-      let endDate = new Date().getTime();
+      let startDate = new Date(this.section.startDate).getTime();
+      let endDate = new Date(this.section.endDate).getTime();
 
       let slice = (endDate - startDate)/14
       var i:number;
@@ -182,7 +180,7 @@ export class StudentViewComponent implements OnInit {
         labels.push(new Date(startDate + i*slice).toString())
         dateCounts.push(0);
       }
-      console.log(labels)
+      // console.log(labels)
 
       // topic data
       let data = [];
@@ -199,12 +197,11 @@ export class StudentViewComponent implements OnInit {
         }
 
         //timeline
-        // var d:number = new Date(tweet.year, tweet.month, tweet.day).getTime()
         var d:number = new Date(tweet.timestamp).getTime()
         dateCounts[Math.floor((d-startDate)/slice)] +=1;
       }
       this.doughnutChartData = data;
-      console.log(dateCounts)
+      // console.log(dateCounts)
     
 
       this.ands = {

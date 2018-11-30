@@ -48,7 +48,7 @@
       Overall Class Tweet Distribution over Time
     </h3>
   </div>
-  <div class="offsetChart">
+  <div *ngIf="timeline" class="offsetChart">
     <app-time-graph [dataIn]="ands"></app-time-graph>
   </div>
 </div>
