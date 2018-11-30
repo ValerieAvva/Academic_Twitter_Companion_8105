@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import { auth } from 'firebase';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -13,7 +15,7 @@ export class CreateUserComponent implements OnInit {
   registrationFormGroup: FormGroup;
   passwordFormGroup: FormGroup;
  
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private route: Router, public afAuth: AngularFireAuth, private formBuilder: FormBuilder) {
     this.passwordFormGroup = this.formBuilder.group({
       password: ['', Validators.required],
       repeatPassword: ['', Validators.required]
@@ -29,8 +31,10 @@ export class CreateUserComponent implements OnInit {
   ngOnInit() {
   }
 
-  createUser() {
-    // TODO: Fill in
+  createUser(email: string, password: string) {
+    this.afAuth.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(res => this.route.navigate(['\login']));
   }
 
 }

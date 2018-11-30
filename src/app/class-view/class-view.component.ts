@@ -42,9 +42,11 @@ export class ClassViewComponent implements OnInit {
   students: Student[];
   studentSelected: Student;
 
+
   public doughnutChartLabels:string[];
   public doughnutChartData: number[] = [13, 38, 23];
   public doughnutChartType:string = 'doughnut';
+
 
   emptyValidation = new FormControl([Validators.required]);
 
