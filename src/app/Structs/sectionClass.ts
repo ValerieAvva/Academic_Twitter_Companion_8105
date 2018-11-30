@@ -10,6 +10,8 @@ export class Section {
   tweets: number;
   likes: number;
   retweets: number;
+  startDate: Date;
+  endDate: Date;
 
   constructor(name: string, coursNum: number,topics: Array<String>, roster?: Array<Student>) {
     this.name = name;
