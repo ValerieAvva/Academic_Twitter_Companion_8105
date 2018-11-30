@@ -40,15 +40,15 @@ export class TimeGraphComponent implements AfterViewInit {
               }
             }
           }],
-          yAxes : [{
-            ticks: {
-              steps : 10,
-              stepValue : 1,
-              max : 10,
-              min : 0,
-            }
-          }
-          ]
+          // yAxes : [{
+            // ticks: {
+            //   steps : 10,
+            //   stepValue : 1,
+            //   max : 10,
+            //   min : 0,
+            // }
+          // }
+          // ]
         },
       }
     };

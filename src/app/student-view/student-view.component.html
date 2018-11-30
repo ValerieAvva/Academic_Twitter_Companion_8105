@@ -38,6 +38,7 @@
                 [data]="doughnutChartData"
                 [labels]="doughnutChartLabels"
                 [options]="doughnutChartOptions"
+                [colors]="chartColors"
                 [chartType]="doughnutChartType"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"
@@ -52,7 +53,7 @@
     <div class="row">
     </div>
     <div class="marginin">
-      <div class="column">
+      <div *ngIf="timeline" class="column">
         <app-time-graph [dataIn]="ands"></app-time-graph>
       </div>
     </div>
@@ -77,7 +78,7 @@
     <mat-datepicker #endDate></mat-datepicker>
     <br/>
     <button mat-raised-button color="primary" (click)="updateFilters()">Update Filters</button>
-
+    <br/>
   
   
     <!-- <div class="container-fluid" *ngFor="let tweet of tweets"> -->

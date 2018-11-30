@@ -34,8 +34,8 @@
     <div class="column">
       <h3>Class Topic Distribution</h3>
       <canvas baseChart
-              [data]= this.doughnutChartData
-              [labels]= this.doughnutChartLabels
+              [data]= "doughnutChartData"
+              [labels]= "doughnutChartLabels"
               [options]="doughnutChartOptions"
               [chartType]="doughnutChartType"
               (chartHover)="chartHovered($event)"
@@ -48,7 +48,7 @@
       Overall Class Tweet Distribution over Time
     </h3>
   </div>
-  <div class="offsetChart">
+  <div *ngIf="timeline" class="offsetChart">
     <app-time-graph [dataIn]="ands"></app-time-graph>
   </div>
 </div>

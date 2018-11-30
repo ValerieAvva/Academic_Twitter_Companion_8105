@@ -24,6 +24,7 @@ export class StudentViewComponent implements OnInit {
       data: [3, 3, 4, 3, 3, 4, 3],
     }]
   };
+  timeline:boolean = false;
 
   student: Student;
   section: Section;
@@ -63,7 +64,10 @@ export class StudentViewComponent implements OnInit {
   public doughnutChartLabels:string[];
   public doughnutChartData:number[] = [0,0,0];
   public doughnutChartType:string = 'doughnut';
-  doughnutChartOptions:any;
+  public chartColors: any[] = [
+    { 
+      backgroundColor:["#E91E63", "#2196F3", "#4CAF50", "#FF5722", "#607D8B"] 
+    }];
 
   constructor(private studentService : StudentService,
               private tweetService : TweetsService,
@@ -93,21 +97,23 @@ export class StudentViewComponent implements OnInit {
         this.student = student;
         this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
         this.doughnutChartData = this.student.topicDistNum;
-        this.tweetService.getTweets(this.student.handle, new Date(2018, 10, 8), new Date(), [], true, true)
-            .subscribe(tweets => {
-              this.tweets = tweets;
-              console.log('tweets received');
-              console.log(this.tweets);
-            });
+
         this.sectionService.getSection(student.courseNum).subscribe(section => {
           this.section = section;
           this.doughnutChartLabels = this.section.topics as string[];
           for(let label of this.doughnutChartLabels) {
             this[label] = true;
-            // this.topicsChecked.push(this[label])
           }
-          console.log(this.doughnutChartLabels)
+          // console.log(this.doughnutChartLabels)
           console.log(this.section)
+
+          this.tweetService.getTweets(this.student.handle, new Date(section.startDate), new Date(section.endDate), [], true, true)
+            .subscribe(tweets => {
+              this.tweets = tweets;
+              console.log('tweets received');
+              console.log(this.tweets);
+              this.updateNumbers();
+            });
         });
         this.studentService.getStudents(student.courseNum).subscribe(roster => {
           this.roster = roster;
@@ -143,7 +149,7 @@ export class StudentViewComponent implements OnInit {
     }
     
     let topics = []
-    console.log(this.doughnutChartLabels)
+    // console.log(this.doughnutChartLabels)
     for(let label in this.doughnutChartLabels){
       let name = this.doughnutChartLabels[label]
       if (this[name] == true){
@@ -157,6 +163,57 @@ export class StudentViewComponent implements OnInit {
               console.log('tweets received');
               console.log(this.tweets);
             });
+  }
+
+  updateNumbers() : void {
+    if (this.tweets.length > 0 && this.doughnutChartLabels.length > 0) {
+      // time graph update
+      let startDate = new Date(this.section.startDate).getTime();
+      let endDate = new Date(this.section.endDate).getTime();
+
+      let slice = (endDate - startDate)/14
+      var i:number;
+      let labels = [];
+      let dateCounts = [];
+      for (i=0; i<14;i++) {
+        labels.push(new Date(startDate + i*slice).toString())
+        dateCounts.push(0);
+      }
+      // console.log(labels)
+
+      // topic data
+      let data = [];
+      for (let label of this.doughnutChartLabels) {
+        data.push(0);
+      }
+      
+      for (let tweet of this.tweets) {
+        //hashtag number update
+        for (let ht of tweet.hashtags) {
+          if (this.doughnutChartLabels.includes(ht)) {
+            data[this.doughnutChartLabels.indexOf(ht)] += 1
+          }
+        }
+
+        //timeline
+        var d:number = new Date(tweet.timestamp).getTime()
+        dateCounts[Math.floor((d-startDate)/slice)] +=1;
+      }
+      this.doughnutChartData = data;
+      // console.log(dateCounts)
+    
+
+      this.ands = {
+        labels: labels,
+        datasets: [{
+          label: 'Num of Tweets',
+          data: dateCounts,
+        }]
+      };
+      this.timeline = true;
+      
+    }
+    
   }
 }
 
