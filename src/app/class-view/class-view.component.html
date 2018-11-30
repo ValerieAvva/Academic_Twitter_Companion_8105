@@ -34,8 +34,8 @@
     <div class="column">
       <h3>Class Topic Distribution</h3>
       <canvas baseChart
-              [data]= this.doughnutChartData
-              [labels]= this.doughnutChartLabels
+              [data]= "doughnutChartData"
+              [labels]= "doughnutChartLabels"
               [options]="doughnutChartOptions"
               [chartType]="doughnutChartType"
               (chartHover)="chartHovered($event)"

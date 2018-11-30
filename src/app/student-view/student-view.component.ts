@@ -24,6 +24,7 @@ export class StudentViewComponent implements OnInit {
       data: [3, 3, 4, 3, 3, 4, 3],
     }]
   };
+  timeline:boolean = false;
 
   private student: Student;
   private section: Section;
@@ -63,6 +64,10 @@ export class StudentViewComponent implements OnInit {
   public doughnutChartLabels:string[];
   public doughnutChartData:number[] = [0,0,0];
   public doughnutChartType:string = 'doughnut';
+  public chartColors: any[] = [
+    { 
+      backgroundColor:["#E91E63", "#2196F3", "#4CAF50", "#FF5722", "#607D8B"] 
+    }];
   
 
   constructor(private studentService : StudentService,
@@ -98,6 +103,7 @@ export class StudentViewComponent implements OnInit {
               this.tweets = tweets;
               console.log('tweets received');
               console.log(this.tweets);
+              this.updateNumbers();
             });
         this.sectionService.getSection(student.courseNum).subscribe(section => {
           this.section = section;
@@ -106,6 +112,7 @@ export class StudentViewComponent implements OnInit {
             this[label] = true;
             // this.topicsChecked.push(this[label])
           }
+          this.updateNumbers();
           console.log(this.doughnutChartLabels)
           console.log(this.section)
         });
@@ -157,6 +164,60 @@ export class StudentViewComponent implements OnInit {
               console.log('tweets received');
               console.log(this.tweets);
             });
+  }
+
+  updateNumbers() : void {
+    if (this.tweets.length > 0 && this.doughnutChartLabels.length > 0) {
+      // time graph update
+      // let startDate = this.section.startDate;
+      // let endDate = this.section.endDate;
+      let startDate = new Date(2018, 7).getTime();
+      let endDate = new Date().getTime();
+
+      let slice = (endDate - startDate)/14
+      var i:number;
+      let labels = [];
+      let dateCounts = [];
+      for (i=0; i<14;i++) {
+        labels.push(new Date(startDate + i*slice).toString())
+        dateCounts.push(0);
+      }
+      console.log(labels)
+
+      // topic data
+      let data = [];
+      for (let label of this.doughnutChartLabels) {
+        data.push(0);
+      }
+      
+      for (let tweet of this.tweets) {
+        //hashtag number update
+        for (let ht of tweet.hashtags) {
+          if (this.doughnutChartLabels.includes(ht)) {
+            data[this.doughnutChartLabels.indexOf(ht)] += 1
+          }
+        }
+
+        //timeline
+        // var d:number = new Date(tweet.year, tweet.month, tweet.day).getTime()
+        var d:number = new Date(tweet.timestamp).getTime()
+        dateCounts[Math.floor((d-startDate)/slice)] +=1;
+      }
+      this.doughnutChartData = data;
+      console.log(dateCounts)
+    
+
+      this.ands = {
+        labels: labels,
+        datasets: [{
+          label: 'Num of Tweets',
+          data: dateCounts,
+        }]
+      };
+      this.timeline = true;
+      
+    }
+    
   }
 }
 

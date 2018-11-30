@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Section} from '../Structs/sectionClass';
 import {ActivatedRoute} from '@angular/router';
 import {SectionService} from '../services/section.service';
@@ -6,6 +6,7 @@ import { Location} from '@angular/common';
 import {Student} from '../Structs/studentClass';
 import {StudentService} from '../services/student.service';
 import {FormControl, Validators} from '@angular/forms';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-class-view',
@@ -39,10 +40,9 @@ export class ClassViewComponent implements OnInit {
   students: Student[];
   studentSelected: Student;
 
-  public doughnutChartLabels: String[] = ["topic 1", "topic 2", "topic 3"];
+  public doughnutChartLabels:string[];
   public doughnutChartData: number[] = [13, 38, 23];
-  doughnutChartDataClone: number[];
-  public doughnutChartType = 'doughnut';
+  public doughnutChartType:string = 'doughnut';
 
   emptyValidation = new FormControl([Validators.required]);
 
@@ -76,16 +76,18 @@ export class ClassViewComponent implements OnInit {
         console.log(section.name);
         console.log('Students list');
         
-        this.doughnutChartLabels = this.section.topics;
         
-        // this.doughnutChartData = this.section.topicCounts;
+        console.log("topic list")
+        this.doughnutChartLabels = this.section.topics as string[];
+        console.log(this.doughnutChartLabels)
+        this.doughnutChartData = this.section.topicCounts;
         // uncomment ^ and delete next block of code once class has this data
         let data = [];
         for (let label of this.doughnutChartLabels) {
           data.push(Math.floor(Math.random() * 100) + 1);
         }
         this.doughnutChartData = data;
-
+        
         this.barChartData = [
           {data: [section.tweets, section.retweets, section.likes]}
         ];

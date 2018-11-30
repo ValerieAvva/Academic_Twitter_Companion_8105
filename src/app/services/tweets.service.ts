@@ -21,14 +21,14 @@ export class TweetsService {
     //Add another service here if you want
   ) { }
 
-  /*
-  getTweets(handle: string) : Observable<Tweet[]> {
-    const url = `${this.tweetUrl}/students/${handle}`;
-    return this.http.get<Tweet[]>(url).pipe(
-      catchError(this.handleError('getTweets', []))
-    );
-  }
-  */
+  
+  // getNumTweets(handle: string, startTime:Date, endTime:Date) : Observable<Tweet[]> {
+  //   const url = `${this.tweetUrl}/students/${handle}`;
+  //   return this.http.get<Tweet[]>(url).pipe(
+  //     catchError(this.handleError('getTweets', []))
+  //   );
+  // }
+  
 
   getTweets(handle: string, startTime: Date, endTime: Date, hashtags: string[], reply: boolean, retweet: boolean ) : Observable<Tweet[]> {
     var queries = new Array();
