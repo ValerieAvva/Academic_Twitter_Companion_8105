@@ -33,11 +33,11 @@ New Features
 - Forgot password not yet working
 
 ## Install Guide
-Pre-requisites:​
+# Pre-requisites:​
 
 This code was developed and tested on Windows 10 machines. This install guide and related documents are written for use in that environment. Other operating systems can access the final deployed web application, but this guide does not contain information on how to deploy this web application in other operating systems. 
 
-Local setup:
+# Local setup:
 
 Download and install node.js and npm. https://www.npmjs.com/get-npm
 
@@ -45,7 +45,7 @@ Get a copy of the source code. Either through downloading from github or using g
 
 Open a command prompt and navigate to the root directory of the source code
 
-Run the following commands:
+# Run the following commands:
 
 'npm install'
 'npm install -g @angular/cli'
@@ -56,7 +56,7 @@ Run the following commands:
 
 Open a web browser and navigate to http://localhost:3000/ 
 
-Deploy to a heroku server:
+# Deploy to a heroku server:
 	
 The Georgia Tech version of this website is hosted at https://academic-twitter-companion.herokuapp.com/view/180237 . It automatically updates with changes to the source code. To host a different version, the following instructions will walk through the process.
 
@@ -64,14 +64,14 @@ Install heroku per the instructions on this site https://devcenter.heroku.com/ar
 
 Open a command prompt and navigate to the root directory of the source code used in the local setup. 
 
-Run the following commands
+# Run the following commands
 'heroku login'
 Login with a heroku account
 'heroku create'
 'git push heroku master'
 'heroku open'
 
-##Troubleshooting: ​ 
+## Troubleshooting: ​ 
 For trouble with running the code:
 Try 'npm install' again
 After building, can try 'node server.js' to run
