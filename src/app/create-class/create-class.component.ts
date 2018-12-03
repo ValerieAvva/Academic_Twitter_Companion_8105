@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {bindCallback} from 'rxjs/observable/bindCallback';
 import {MatSnackBar, MatTable} from '@angular/material';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class CreateClassComponent implements OnInit {
   constructor(private sectionService: SectionService,
               private studentService: StudentService,
               private location: Location,
-              public snackbar: MatSnackBar) { }
+              public snackbar: MatSnackBar,
+              public afAuth: AngularFireAuth) { }
 
   ngOnInit() {
     this.students = new Array<Student>();
@@ -86,7 +88,7 @@ export class CreateClassComponent implements OnInit {
 changeListener(files: FileList){
   console.log(files);
   if(files && files.length > 0) {
-     let file : File = files.item(0); 
+     let file : File = files.item(0);
        console.log(file.name);
        console.log(file.size);
        console.log(file.type);
@@ -123,9 +125,12 @@ changeListener(files: FileList){
     }
 
     if(this.emptyValidation.valid && this.courseNUmValidation.valid && b) {
-      const sect = new Section(
+      var user = this.afAuth.auth.currentUser;
+      console.log("UID", user.uid);
+      var sect = new Section(
         this.className,
         this.courseNumber,
+        user.uid,
         this.topics,
         );
       this.sectionService.addSection(sect).subscribe(section => {

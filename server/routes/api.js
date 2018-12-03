@@ -12,10 +12,12 @@ var TweetModel = require("../models/tweet.js");
 var stringHash = require("string-hash");
 
 // SECTIONS
-// Get all sections
-router.get('/sections', (req, res) => {
-    SectionModel.find({}, function(err, sections) {
+// Get all sections for a given user
+router.get('users/:uid/sections', (req, res) => {
+    console.log("Get uid: ", req.params.uid);
+    SectionModel.find({uid: req.params.uid}, function(err, sections) {
       if (err) throw err;
+
 
       // object of all the users
       res.json(sections);
@@ -44,13 +46,15 @@ router.put('/sections', (req, res) => {
 
 //put new section
 router.post('/sections', (req, res) => {
+  console.log("Post uid: ", req.body.uid);
   var newSection = SectionModel({
       id: req.body.courseNum,
-      courseNum: req.body.courseNum,  
+      courseNum: req.body.courseNum,
       startDate: req.body.startDate,
       endDate: req.body.endDate,
       name: req.body.name,
-      topics:  req.body.topics
+      topics:  req.body.topics,
+      uid: req.body.uid,
     });
 
     newSection.save(function(err) {
@@ -60,7 +64,7 @@ router.post('/sections', (req, res) => {
 
 });
 
-// STUDENTS 
+// STUDENTS
 // Get student by id
 router.get('/students/:id', (req, res) => {
   StudentModel.findOne({id: req.params.id}, function(err, student) {
@@ -84,7 +88,7 @@ router.get('/students/sectionID/:id', (req, res) => {
         s.topicDistNum = Array.apply(null, new Array(s.topicDist.length)).map(Number.prototype.valueOf,0);
         if (err) throw err;
         for (let t of tweets)
-        {          
+        {
           s.totTweets += 1
           s.totLike += t.favorite_count
           s.totRetweets += t.retweet_count

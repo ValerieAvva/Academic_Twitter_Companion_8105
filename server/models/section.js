@@ -9,7 +9,8 @@ var sectionSchema = new Schema({
         startDate: {type : Date, default: Date.now },
         endDate: {type : Date, default: Date.now },
         name: String,
-        topics: [String]
+        topics: [String],
+        uid: String
 });
 
 var SectionModel = mongoose.model('SectionModel', sectionSchema);

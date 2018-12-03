@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SectionService} from '../services/section.service';
 import {Section} from '../Structs/sectionClass';
 import {FormControl, Validators} from '@angular/forms';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,8 @@ import {FormControl, Validators} from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private sectionService: SectionService) { }
+  constructor(private sectionService: SectionService,
+              public afAuth: AngularFireAuth) { }
 
   sections: Array<Section>;
   selectedValue: number;
@@ -22,7 +24,9 @@ export class HomeComponent implements OnInit {
   }
 
   getSections() : void {
-    this.sectionService.getSections()
+    var user = this.afAuth.auth.currentUser;
+
+    this.sectionService.getSectionsUser(user.uid)
       .subscribe(
         sections => {
           this.sections = sections;

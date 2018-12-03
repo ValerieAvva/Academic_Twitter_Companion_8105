@@ -12,12 +12,14 @@ export class Section {
   retweets: number;
   startDate: string;
   endDate: string;
+  uid: string;
 
-  constructor(name: string, coursNum: number,topics: Array<String>, roster?: Array<Student>) {
+  constructor(name: string, coursNum: number,  uid: string, topics: Array<String>, roster?: Array<Student>) {
     this.name = name;
     this.courseNum = coursNum;
     this.roster = roster;
     this.topics = topics;
+    this.uid = uid;
   }
 }
 
