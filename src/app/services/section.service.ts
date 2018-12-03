@@ -30,7 +30,8 @@ export class SectionService {
   }
 
   getSectionsUser(uid: string) : Observable<Section[]> {
-    const url = `api/users/${uid}/sections`;
+    const url = `${this.sectionUrl}/user/${uid}`;
+    console.log(url);
     return this.http.get<Section[]>(url).pipe(
       catchError(this.handleError<Section[]>(`getSectionsUser uid=${uid}`)
     ));

@@ -13,7 +13,7 @@ var stringHash = require("string-hash");
 
 // SECTIONS
 // Get all sections for a given user
-router.get('users/:uid/sections', (req, res) => {
+router.get('/sections/user/:uid', (req, res) => {
     console.log("Get uid: ", req.params.uid);
     SectionModel.find({uid: req.params.uid}, function(err, sections) {
       if (err) throw err;
