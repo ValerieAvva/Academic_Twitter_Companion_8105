@@ -230,7 +230,7 @@ router.post('/tweets', (req, res) => {
   var newTweet = TweetModel({
         id : req.body.id,
         user : req.body.username,
-        handle : req.body.handle,
+        handle : req.body.handle.toLowerCase(),
         timestamp: req.body.timestamp,
         content : req.body.content,
         hashtags : req.body.hashtags,
