@@ -178,6 +178,10 @@ router.get('/tweets/', (req, res) => {
   {
     req.query.hashtags = {$all : req.query.hashtags.split(",")}
   }
+  if (req.query.handle != null)
+  {
+    req.query.handle = req.query.handle.toLowerCase();
+  }
 
   console.log(req.query);
 

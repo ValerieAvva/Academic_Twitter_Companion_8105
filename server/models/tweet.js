@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var tweetSchema = new Schema({
-	id : { type: Number, required: true, unique: true },
+	id : { type: String, required: true, unique: true },
 	username : { type: String, required: true},
 	handle : { type: String, required: true},
 	timestamp: { type: Date, required: true},
