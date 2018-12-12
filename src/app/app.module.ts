@@ -13,7 +13,7 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, M
           MatGridListModule, MatCardModule, MatDatepickerModule,
           MatNativeDateModule, MatIconModule, MatToolbarModule,
           MatStepperModule, MatTableModule, MatDialogModule,
-          MatProgressSpinner, MatChipsModule, MatCheckbox, MatCheckboxModule} from '@angular/material';
+          MatProgressSpinner, MatChipsModule, MatCheckbox, MatCheckboxModule, MatProgressBarModule} from '@angular/material';
 
 import { HomeComponent } from './home/home.component';
 import { TweetComponent } from './tweet/tweet.component';
@@ -77,6 +77,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     MatStepperModule,
     MatTableModule,
     MatDialogModule,
+    MatProgressBarModule,
     MatChipsModule,
     AngularFireModule.initializeApp({
     apiKey: "AIzaSyCyIRubnGjWMGf58Ojs9k6l-82VJuixQ-A",

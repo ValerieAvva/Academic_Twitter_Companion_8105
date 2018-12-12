@@ -132,6 +132,8 @@ changeListener(files: FileList){
         this.courseNumber,
         user.uid,
         this.topics,
+        this.inputStartDate,
+        this.inputEndDate
         );
       this.sectionService.addSection(sect).subscribe(section => {
         console.log('Section Created')
