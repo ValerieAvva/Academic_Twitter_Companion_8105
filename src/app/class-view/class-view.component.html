@@ -18,7 +18,9 @@
     <button mat-raised-button color="primary" routerLink="/student/{{selectedValue}}">Go to Student</button>
   </form>
 
-  <div class="row">
+  <mat-progress-bar *ngIf="!timeline" mode="determinate" [value]="100*this.stuCount/this.students.length"></mat-progress-bar>
+
+  <div *ngIf="timeline" class="row">
     <div class="column">
       <h3>Class Tweet Type Distribution</h3>
       <canvas baseChart
@@ -29,9 +31,10 @@
               [chartType]="barChartType"
               (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"
-              height="70"></canvas>
+              height="70"
+              width="200"></canvas>
     </div>
-    <div class="column">
+    <div *ngIf="timeline" class="column">
       <h3>Class Topic Distribution</h3>
       <canvas baseChart
               [data]= "doughnutChartData"
@@ -50,6 +53,31 @@
   </div>
   <div *ngIf="timeline" class="offsetChart">
     <app-time-graph [dataIn]="ands"></app-time-graph>
+  </div>
+<div *ngIf="timeline" >
+  <mat-card class="tweet"  *ngFor="let tweet of tweets">
+      <mat-card-header>
+        <mat-card-title>
+          <a href="https://twitter.com/{{tweet.handle}}">{{tweet.username}}</a>            
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{tweet.handle}} ·
+          <!-- <a href="{{tweet.content}}">{{tweet.timestamp}}</a> -->
+          {{tweet.timestamp}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        {{tweet.content}}
+        <div *ngFor="let ht of tweet.hashtags">
+          <a href="https://twitter.com/hashtag/{{ht.replace('#', '')}}">{{ht}}</a>
+        </div>
+      </mat-card-content>
+      <mat-card-content>
+        Likes: {{tweet.likes}} Retweets: {{tweet.retweets}}
+      </mat-card-content>
+      <mat-card-footer>
+      </mat-card-footer>
+    </mat-card>
   </div>
 </div>
 

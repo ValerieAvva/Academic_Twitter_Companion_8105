@@ -37,8 +37,8 @@ export class StudentViewComponent implements OnInit {
       yAxes: [{
         ticks: {
           steps : 10,
-          stepValue : 10,
-          max : 50,
+          // stepValue : 10,
+          // max : 50,
         }
       }]
     }
@@ -95,7 +95,10 @@ export class StudentViewComponent implements OnInit {
     this.studentService.getStudent(id)
       .subscribe(student => {
         this.student = student;
-        this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
+        this.student.totTweets = 0;
+        this.student.totLikes = 0;
+        this.student.totRetweets = 0;
+        // this.barChartData = [{data: [student.totTweets, student.totRetweets, student.totLikes]}];
         this.doughnutChartData = this.student.topicDistNum;
 
         this.sectionService.getSection(student.courseNum).subscribe(section => {
@@ -190,16 +193,28 @@ export class StudentViewComponent implements OnInit {
       for (let tweet of this.tweets) {
         //hashtag number update
         for (let ht of tweet.hashtags) {
-          if (this.doughnutChartLabels.includes(ht)) {
-            data[this.doughnutChartLabels.indexOf(ht)] += 1
+          console.log(ht + " list: " + this.doughnutChartLabels)
+          if (this.doughnutChartLabels.includes(ht.replace('#', ''))) {
+            data[this.doughnutChartLabels.indexOf(ht.replace('#', ''))] += 1
           }
         }
 
         //timeline
         var d:number = new Date(tweet.timestamp).getTime()
         dateCounts[Math.floor((d-startDate)/slice)] +=1;
+
+        // tweet types graph
+        this.student.totTweets += 1
+        if (tweet.retweets) {
+          this.student.totRetweets += tweet.retweets;
+        }
+        if (tweet.likes) {
+          this.student.totLikes += tweet.likes;
+        }
       }
       this.doughnutChartData = data;
+      this.barChartData = [{data: [this.student.totTweets, this.student.totRetweets, this.student.totLikes]}];
+
       // console.log(dateCounts)
     
 

@@ -24,8 +24,8 @@ export class ClassViewComponent implements OnInit {
       yAxes: [{
         ticks: {
           steps : 10,
-          stepValue : 10,
-          max : 300,
+          // stepValue : 10,
+          // max : 10000,
         }
       }]
     }
@@ -41,10 +41,12 @@ export class ClassViewComponent implements OnInit {
   section: Section;
   students: Student[];
   studentSelected: Student;
+  tweets: Tweet[];
+  
 
 
   public doughnutChartLabels:string[];
-  public doughnutChartData: number[] = [13, 38, 23];
+  public doughnutChartData: number[] = [1, 1, 1];
   public doughnutChartType:string = 'doughnut';
 
 
@@ -67,6 +69,7 @@ export class ClassViewComponent implements OnInit {
   };
   dateCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   timeline = false;
+  stuCount = 0;
 
   ngOnInit() {
     this.getSection();
@@ -89,6 +92,11 @@ export class ClassViewComponent implements OnInit {
         
         console.log("topic list")
         this.doughnutChartLabels = this.section.topics as string[];
+        this.doughnutChartData = new Array<number>(this.doughnutChartLabels.length);
+        var i:number;
+        for (i=0; i<this.doughnutChartData.length;i++) {
+          this.doughnutChartData[i] = 0;
+        }
         console.log(this.doughnutChartLabels)
         // this.doughnutChartData = this.section.topicCounts;
         // uncomment ^ and delete next block of code once class has this data
@@ -99,19 +107,23 @@ export class ClassViewComponent implements OnInit {
           this.students = students as Student[];
           let tweets:Tweet[] = []
           for (let student of this.students) {
-            section.tweets += student.totTweets;
-            section.retweets += student.totRetweets;
-            section.likes += student.totLikes;
+            // section.tweets += student.totTweets;
+            // section.retweets += student.totRetweets;
+            // section.likes += student.totLikes;
             console.log(student)
             this.tweetService.getTweets(student.handle, new Date(0), new Date(), [], true, true)
             .subscribe(ts => {
               tweets = tweets.concat(ts);
               this.updateNumbers(ts);
+              this.tweets = tweets;
+              this.tweets.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+              // console.log('tweets received');
+              // console.log(this.tweets);
             });
           }
-          this.barChartData = [
-            {data: [section.tweets, section.retweets, section.likes]}
-          ];
+          // this.barChartData = [
+          //   {data: [section.tweets, section.retweets, section.likes]}
+          // ];
         });
 
       });
@@ -119,6 +131,8 @@ export class ClassViewComponent implements OnInit {
 
   updateNumbers(tweets:Tweet[]) : void {
     // time graph update
+    // this.tweets = tweets;
+    this.stuCount += 1
     let startDate = new Date(this.section.startDate).getTime();
     let endDate = new Date(this.section.endDate).getTime();
 
@@ -141,10 +155,20 @@ export class ClassViewComponent implements OnInit {
     for (let tweet of tweets) {
       //hashtag number update
       for (let ht of tweet.hashtags) {
-        if (this.doughnutChartLabels.includes(ht)) {
-          this.doughnutChartData[this.doughnutChartLabels.indexOf(ht)] += 1
+        if (this.doughnutChartLabels.includes(ht.replace('#', ''))) {
+          data[this.doughnutChartLabels.indexOf(ht.replace('#', ''))] += 1
         }
       }
+      // console.log(this.section.tweets  + " rt: " + tweet.retweets + " likes: " +  tweet.likes)
+
+      this.section.tweets += 1;
+      if (tweet.retweets) {
+        this.section.retweets += tweet.retweets;
+      }
+      if (tweet.likes) {
+        this.section.likes += tweet.likes;
+      }
+      // console.log(this.section.tweets  + " rt: " + this.section.retweets + " likes: " +  this.section.likes)
 
       //timeline
       // var d:number = new Date(tweet.year, tweet.month, tweet.day).getTime()
@@ -153,7 +177,9 @@ export class ClassViewComponent implements OnInit {
     }
     // this.doughnutChartData = data;
     // console.log(this.dateCounts)
-  
+    this.barChartData = [
+      {data: [this.section.tweets, this.section.retweets, this.section.likes]}
+    ];
 
     this.ands = {
       labels: labels,
@@ -163,7 +189,11 @@ export class ClassViewComponent implements OnInit {
       }]
     };
     this.timeline = false;
-    this.timeline = true;
+    if (this.stuCount == this.students.length) {
+      this.timeline = true;
+      // console.log(this.section.tweets  + " rt: " + this.section.retweets + " likes: " +  this.section.likes)
+    }
+    
     
     
     
