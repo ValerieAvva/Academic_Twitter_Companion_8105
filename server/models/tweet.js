@@ -12,6 +12,7 @@ var tweetSchema = new Schema({
 	hashtags: [String],
 	likes: Number,
 	retweets: Number,
+	replies: Number,
 	reply: Boolean,
 	retweet: Boolean
 });
