@@ -97,9 +97,9 @@ changeListener(files: FileList){
        reader.onload = (e) => {
           let csv: string = reader.result;
           let values = csv.split(',');
-          for (let i = 0; i <values.length/2; i++)
+          for (let i = 0; i <values.length; i = i + 2)
           {
-            console.log(values[i], values[i+1]);
+            console.log(i, " : ", values[i], values[i+1]);
             this.addStudent(values[i], values[i+1])
           }
        }
@@ -123,7 +123,6 @@ changeListener(files: FileList){
         b = false;
       }
     }
-
     if(this.emptyValidation.valid && this.courseNUmValidation.valid && b) {
       var user = this.afAuth.auth.currentUser;
       console.log("UID", user.uid);
